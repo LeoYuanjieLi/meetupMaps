@@ -1,0 +1,52 @@
+*{
+	box-sizing: border-box;
+	font-family:"Alegreya Sans", Sans-serif;
+}
+
+body {
+	margin:auto;
+}
+
+main #heading{
+	border-radius: 5px;
+	z-index: 99;
+	padding-left:10px;
+	padding-right: 10px;
+	background-color: white;
+	top:10px;
+	left:45%;
+	position:absolute;
+}
+
+main #searchBar{
+	box-shadow: 1px 1px lightgrey;
+	z-index: 99;
+	padding:5px;
+	background-color: white;
+	top:50px;
+	left:5%;
+	position:absolute;
+}
+
+main h1 {
+	margin:auto;
+	text-align: center;
+
+}
+
+#map {
+	top:0;
+	margin:0;
+	height: 800px;
+	width: 100%;
+}	
+
+
+
+/*animate primary location marker*/
+#markerLayer {
+  animation: pulse .5s infinite alternate;
+  -webkit-animation: pulse .5s infinite alternate;
+  transform-origin: center;
+  -webkit-transform-origin: center;
+}

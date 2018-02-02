@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width">
+	<title>Event Monster</title>
+    <script
+      src="https://code.jquery.com/jquery-3.2.1.min.js"
+      integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+      crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="./style.css">
+	<link href="https://fonts.googleapis.com/css?family=Alegreya+Sans" rel="stylesheet">
+</head>
+<body>
+	<main>
+		<div id="heading"><h1>MeetUp Map</h1></div>
+		<div id="searchBar">
+			<form id="js-search">
+				<input type="text" name="search" placeholder="Event category, e.g. art">
+				<button>Search</button>
+			</form>
+		</div>
+		<div id="map"></div>
+		<div class="js-results"></div>
+	</main>
+	<script src="mapStyle.js"></script>
+	<script src="map.js"></script>
+	<script async defer
+	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKJSMF9R_7IDHW86pa8zcQh7xL0C1DwVQ&callback=initMap">
+	</script>
+</body>
+</html>
