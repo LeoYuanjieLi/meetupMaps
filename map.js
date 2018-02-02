@@ -10,16 +10,52 @@ const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
 let centerLon;
-// this is for the overlay center circle
-let overlay;
+// // this is for the overlay center circle
+// let overlay;
+// circleOverlay.prototype = new google.maps.OverlayView();
 
-// -------------------some constants<end line>--------------
-
-
-
+// // -------------------some constants<end line>--------------
 
 
-// google maps
+
+
+
+// // google maps
+// // overlay constructor, we need this to customize the center location object
+// /** @constructor */
+// function circleOverlay(cirCenter, image, map) {
+
+//   // Initialize all properties.
+//   this.bounds_ = cirCenter;
+//   this.image_ = image;
+//   this.map_ = map;
+
+//   // Define a property to hold the image's div. We'll
+//   // actually create this div upon receipt of the onAdd()
+//   // method so we'll leave it null for now.
+//   this.div_ = null;
+
+//   // Explicitly call setMap on this overlay.
+//   this.setMap(map);
+// }
+
+// /**
+//  * onAdd is called when the map's panes are ready and the overlay has been
+//  * added to the map.
+//  */
+// circleOverlay.prototype.onAdd = function() {
+
+//   var div = document.createElement('div');
+//   div.style.borderStyle = 'none';
+//   div.style.borderWidth = '0px';
+//   div.style.position = 'absolute';
+
+//   this.div_ = div;
+
+//   // Add the element to the "overlayLayer" pane.
+//   var panes = this.getPanes();
+//   panes.overlayLayer.appendChild(div);
+// };
 
 // initualize map
 let map;
@@ -39,9 +75,16 @@ function initMap() {
       };
 
       console.log(pos.lat);
+      const mapCenter = pos;
       let marker = new google.maps.Marker({
-        position: {lat: pos.lat, lng: pos.lng},
-        optimized:false,
+          position:mapCenter,
+          icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            scale:20,
+            strokeWeight:0,
+            fillColor:'white',
+            fillOpacity:0.4,
+          },
         map: map
       });
       // infoWindow.setContent('Location found.');
