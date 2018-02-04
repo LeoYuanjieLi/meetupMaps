@@ -44,9 +44,36 @@ main h1 {
 
 
 /*animate primary location marker*/
-#markerLayer {
+/*#markerLayer {
   animation: pulse .5s infinite alternate;
   -webkit-animation: pulse .5s infinite alternate;
   transform-origin: center;
   -webkit-transform-origin: center;
+}*/
+
+
+/*pup up info window*/
+
+.popUpWindow {
+	text-align: left;
+    padding: 5px;
+}
+
+.popUpWindow .link {
+	margin-bottom: 10px;
+	text-decoration: none;
+	padding:5px;
+	color: white;
+	font-size: 18px;
+	background-color: darkgreen;
+	border-radius: 5px;
+}
+
+.popUpWindow .link:hover {
+	background-color: pink;
+}
+
+.eventContentPopUp {
+	color:darkgrey;
+	font-weight: bold;
 }

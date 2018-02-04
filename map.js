@@ -87,11 +87,14 @@ function initMap() {
           },
         map: map
       });
-      // infoWindow.setContent('Location found.');
+      // setContent('Location found.');
       map.setCenter(pos);
     }, function() {
       handleLocationError(true, infoWindow, map.getCenter());
     });
+
+
+
   } else {
     // Browser doesn't support Geolocation
     handleLocationError(false, infoWindow, map.getCenter());
@@ -109,9 +112,8 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 // meetUp search
 function search(){
-
+  let eventMarkers = [];
   $('#js-search').submit(event =>{
-    console.log("search ran!")
     event.preventDefault();
     let userInput = $("#searchBar input").val();
     $.ajax({
@@ -126,16 +128,18 @@ function search(){
       success: function(result){
         centerLat = result.data.city.lat;
         centerLon = result.data.city.lon;
-        showOnMap(result.data.events);
-        console.log(result.data)
+        eventMarkers = addMarkers(result.data.events);
+        showMarkers(eventMarkers, result.data.events);
+        console.log(result.data);
       } 
     })
 
+    cleanMarkers(eventMarkers);
     })
 }
 
-// show event location on map
-function showOnMap(events){
+// add event location on map
+function addMarkers(events){
 // events is an array of events
   let markers = [];
   for(let i = 0; i < events.length; i++){
@@ -151,16 +155,49 @@ function showOnMap(events){
         fillColor:'magenta',
         fillOpacity:1/distance*150,
         strokeColor:'magenta',
-        strokeWeight:0
+        strokeWeight:0,
       },
-      map:map
     });
-    console.log(distance)
     markers.push(marker);
 
   }
 
+  return markers
 
+
+}
+
+// show markers on the map, the markers should have an infowindow associate with it.
+function showMarkers(markers, events){
+  let infowindow = new google.maps.InfoWindow({
+    maxWidth: 600,
+    maxHeight:200,
+
+  });
+
+  for(let i = 0; i < markers.length; i++){
+    markers[i].setMap(map);
+    let contentString = `
+    <div class = 'popUpWindow'>
+    <h1>Event Name: ${events[i].name}</h1>
+    <a class = "link" href = '${events[i].link}' target="_blank">Event Link</a>
+    <div class="eventContentPopUp">${events[i].description}</div>
+    </div>
+    `
+    markers[i].addListener('click', function(){
+      infowindow.open(map, markers[i])
+      infowindow.setContent(contentString);
+      infowindow.open(map, markers[i]);
+    });
+  }
+}
+
+// clean markers on the map
+function cleanMarkers(markers){
+
+  for(let i = 0; i < markers.length; i++){
+    markers[i].setMap(null);
+  }
 }
 
 
