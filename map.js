@@ -82,7 +82,7 @@ function initMap() {
             path: google.maps.SymbolPath.CIRCLE,
             scale:20,
             strokeWeight:0,
-            fillColor:'white',
+            fillColor:'black',
             fillOpacity:0.4,
             strokeColor: "black",
             strokeWeight: 2
@@ -92,14 +92,14 @@ function initMap() {
       // setContent('Location found.');
       map.setCenter(pos);
     }, function() {
-      handleLocationError(true, infoWindow, map.getCenter());
+      handleLocationError(true, infowindow, map.getCenter());
     });
 
 
 
   } else {
     // Browser doesn't support Geolocation
-    handleLocationError(false, infoWindow, map.getCenter());
+    handleLocationError(false, infowindow, map.getCenter());
   }
 }
 
@@ -131,6 +131,10 @@ function search(){
         centerLat = result.data.city.lat;
         centerLon = result.data.city.lon;
         eventMarkers = addMarkers(result.data.events);
+        if(eventMarkers.length === 0){
+          alert('No Events Listed, please try another keyword!')
+        }
+        showListButton(eventMarkers);
         showMarkers(eventMarkers, result.data.events);
         console.log(result.data);
       } 
@@ -148,20 +152,22 @@ function addMarkers(events){
     let eventLon = events[i].group.lon;
     let eventLat = events[i].group.lat;
     let latLng = new google.maps.LatLng(eventLat, eventLon);
-    let distance = Math.sqrt((eventLat*1000 - centerLat*1000)**2 + (eventLon*1000 - centerLon*1000)**2);
+    // let distance = Math.sqrt((eventLat*1000 - centerLat*1000)**2 + (eventLon*1000 - centerLon*1000)**2);
+    let distance = calDistance(eventLat, eventLon, centerLat, centerLon);
+    let opa = parseFloat((1/Math.sqrt(distance)).toFixed(2), 10);
     let marker = new google.maps.Marker({
       position:latLng,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
         scale:6,
+        fillOpacity:opa,
         fillColor:'magenta',
-        fillOpacity:1/distance*150,
-        strokeColor:'lightblue',
+        strokeColor:'blue',
         strokeWeight:2,
       },
     });
-    markers.push(marker);
-
+    markers.push([marker, distance]);
+    console.log(opa);
   }
 
   return markers
@@ -178,18 +184,19 @@ function showMarkers(markers, events){
   });
 
   for(let i = 0; i < markers.length; i++){
-    markers[i].setMap(map);
+    markers[i][0].setMap(map);
     let contentString = `
     <div class = 'popUpWindow'>
     <h1>Event Name: ${events[i].name}</h1>
+    <p>Distance to you: ${markers[i][1].toFixed(2)} Miles</p>
     <a class = "link" href = '${events[i].link}' target="_blank">Event Link</a>
     <div class="eventContentPopUp">${events[i].description}</div>
     </div>
     `
-    markers[i].addListener('click', function(){
-      infowindow.open(map, markers[i])
+    markers[i][0].addListener('click', function(){
+      infowindow.open(map, markers[i][0])
       infowindow.setContent(contentString);
-      infowindow.open(map, markers[i]);
+      infowindow.open(map, markers[i][0]);
     });
   }
 }
@@ -198,12 +205,40 @@ function showMarkers(markers, events){
 function cleanMarkers(markers){
 
   for(let i = 0; i < markers.length; i++){
-    markers[i].setMap(null);
+    markers[i][0].setMap(null);
   }
 }
 
+// calculate distance given two points of latitude and longitude
+function calDistance(lat1, lon1, lat2, lon2){
+    var R = 6371e3; // metres
+    var φ1 = lat1*(Math.PI / 180);
+    var φ2 = lat2*(Math.PI / 180);
+    var Δφ = (lat2-lat1)*(Math.PI / 180);
+    var Δλ = (lon2-lon1)*(Math.PI / 180);
+
+    var a = Math.sin(Δφ/2) * Math.sin(Δφ/2) +
+          Math.cos(φ1) * Math.cos(φ2) *
+          Math.sin(Δλ/2) * Math.sin(Δλ/2);
+    var c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+
+    var d = R * c;
+    return d/1000*0.621371
+}
 
 
+// create a list view of events
+function listView(){
 
+}
+
+// show listEvent Button
+function showListButton(markers){
+  if(markers.length ===0){
+    $('.js-list-button').empty()
+  }else if(markers.length !==0){
+    $('.js-list-button').append(`<button class="listButton">test</button>`)
+  }
+}
 
 $(search);
