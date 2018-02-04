@@ -237,6 +237,7 @@ function showListButton(markers){
   if(markers.length ===0){
     $('.js-list-button').empty()
   }else if(markers.length !==0){
+    $('.js-list-button').empty();
     $('.js-list-button').append(`<button class="listButton">test</button>`)
   }
 }
