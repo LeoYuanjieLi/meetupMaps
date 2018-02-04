@@ -1,6 +1,7 @@
 *{
 	box-sizing: border-box;
-	font-family:"Alegreya Sans", Sans-serif;
+	font-family: 'PT Sans', sans-serif;
+
 }
 
 body {
@@ -8,7 +9,9 @@ body {
 }
 
 main #heading{
+	margin:0;
 	border-radius: 5px;
+	box-shadow: 1px 1px black;
 	z-index: 99;
 	padding-left:10px;
 	padding-right: 10px;
@@ -19,7 +22,8 @@ main #heading{
 }
 
 main #searchBar{
-	box-shadow: 1px 1px lightgrey;
+	border-radius: 5px;
+	box-shadow: 1px 1px black;
 	z-index: 99;
 	padding:5px;
 	background-color: white;
@@ -28,8 +32,8 @@ main #searchBar{
 	position:absolute;
 }
 
-main h1 {
-	margin:auto;
+main h2 {
+	margin:0;
 	text-align: center;
 
 }
@@ -65,7 +69,7 @@ main h1 {
 	padding:5px;
 	color: white;
 	font-size: 18px;
-	background-color: darkgreen;
+	background-color: magenta;
 	border-radius: 5px;
 }
 
@@ -76,4 +80,24 @@ main h1 {
 .eventContentPopUp {
 	color:darkgrey;
 	font-weight: bold;
+}
+
+#searchBar input {
+	height:20px;
+	border-style: solid 1px;
+}
+
+
+
+#searchBar button {
+	width:100px;
+	height:20px;
+	color: lightblue;
+	background-color: black;
+	border-style: none;
+	border-radius: 5px;
+}
+
+#searchBar button:hover {
+	background-color: pink;
 }

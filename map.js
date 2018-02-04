@@ -5,7 +5,7 @@
 
 
 // meetUp URL
-const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&photo-host=public&text=`;
+const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&page=100&photo-host=public&text=`;
 const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
@@ -84,6 +84,8 @@ function initMap() {
             strokeWeight:0,
             fillColor:'white',
             fillOpacity:0.4,
+            strokeColor: "black",
+            strokeWeight: 2
           },
         map: map
       });
@@ -151,11 +153,11 @@ function addMarkers(events){
       position:latLng,
       icon: {
         path: google.maps.SymbolPath.CIRCLE,
-        scale:10,
+        scale:6,
         fillColor:'magenta',
         fillOpacity:1/distance*150,
-        strokeColor:'magenta',
-        strokeWeight:0,
+        strokeColor:'lightblue',
+        strokeWeight:2,
       },
     });
     markers.push(marker);
@@ -170,8 +172,8 @@ function addMarkers(events){
 // show markers on the map, the markers should have an infowindow associate with it.
 function showMarkers(markers, events){
   let infowindow = new google.maps.InfoWindow({
-    maxWidth: 600,
-    maxHeight:200,
+    maxWidth: 400,
+    maxHeight:400,
 
   });
 
