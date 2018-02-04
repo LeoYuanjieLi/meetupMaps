@@ -5,7 +5,7 @@
 
 
 // meetUp URL
-const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&page=100&photo-host=public&text=`;
+const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&page=30&photo-host=public&text=`;
 const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
@@ -15,47 +15,6 @@ let centerLon;
 // circleOverlay.prototype = new google.maps.OverlayView();
 
 // // -------------------some constants<end line>--------------
-
-
-
-
-
-// // google maps
-// // overlay constructor, we need this to customize the center location object
-// /** @constructor */
-// function circleOverlay(cirCenter, image, map) {
-
-//   // Initialize all properties.
-//   this.bounds_ = cirCenter;
-//   this.image_ = image;
-//   this.map_ = map;
-
-//   // Define a property to hold the image's div. We'll
-//   // actually create this div upon receipt of the onAdd()
-//   // method so we'll leave it null for now.
-//   this.div_ = null;
-
-//   // Explicitly call setMap on this overlay.
-//   this.setMap(map);
-// }
-
-// /**
-//  * onAdd is called when the map's panes are ready and the overlay has been
-//  * added to the map.
-//  */
-// circleOverlay.prototype.onAdd = function() {
-
-//   var div = document.createElement('div');
-//   div.style.borderStyle = 'none';
-//   div.style.borderWidth = '0px';
-//   div.style.position = 'absolute';
-
-//   this.div_ = div;
-
-//   // Add the element to the "overlayLayer" pane.
-//   var panes = this.getPanes();
-//   panes.overlayLayer.appendChild(div);
-// };
 
 // initualize map
 let map;
@@ -136,6 +95,8 @@ function search(){
         }
         showListButton(eventMarkers);
         showMarkers(eventMarkers, result.data.events);
+        $(listView(eventMarkers, result.data.events));
+        $(closeList);
         console.log(result.data);
       } 
     })
@@ -152,7 +113,6 @@ function addMarkers(events){
     let eventLon = events[i].group.lon;
     let eventLat = events[i].group.lat;
     let latLng = new google.maps.LatLng(eventLat, eventLon);
-    // let distance = Math.sqrt((eventLat*1000 - centerLat*1000)**2 + (eventLon*1000 - centerLon*1000)**2);
     let distance = calDistance(eventLat, eventLon, centerLat, centerLon);
     let opa = parseFloat((1/Math.sqrt(distance)).toFixed(2), 10);
     let marker = new google.maps.Marker({
@@ -228,8 +188,38 @@ function calDistance(lat1, lon1, lat2, lon2){
 
 
 // create a list view of events
-function listView(){
+function listView(markers,events){
+  $(".js-list-button").click(event =>{
+    $(".js-results").empty();
+    $('.js-results').append(`<button class="close-list">Close</button>`)
+    $('.js-results').append(`<div class="js-results-list"></div>`);
+    console.log('function listView ran!');
+    for(let i =0; i< events.length; i++){
+      $('.js-results-list').append(singleView(markers[i],events[i]));
 
+    }
+    
+  })
+}
+
+// create a single view of an event
+function singleView(marker,event){
+  console.log('function singleView ran!')
+  return `
+  <div class='single-view'>
+    <h1>${event.name}</h1>
+    <p>Distance to you: ${marker[1].toFixed(2)} Miles</p>
+    <a class = "link" href = '${event.link}' target="_blank">Event Link</a>    
+    <div class="event-content-single-view">${event.description}</div>
+  </div>
+  `
+}
+
+function closeList(){
+  $('.js-results').on("click", ".close-list", (event =>{
+    console.log('function closeList ran!');
+    $(".js-results").empty();
+  }))
 }
 
 // show listEvent Button
@@ -238,7 +228,7 @@ function showListButton(markers){
     $('.js-list-button').empty()
   }else if(markers.length !==0){
     $('.js-list-button').empty();
-    $('.js-list-button').append(`<button class="listButton">test</button>`)
+    $('.js-list-button').append(`<button class="listButton">View in List</button>`)
   }
 }
 
