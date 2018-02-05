@@ -5,7 +5,7 @@
 
 
 // meetUp URL
-const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&page=30&photo-host=public&text=`;
+const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&photo-host=public&text=`;
 const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
@@ -33,6 +33,8 @@ function initMap() {
         lng: mapPos.coords.longitude
       };
 
+      centerLat = mapPos.coords.latitude;
+      centerLon = mapPos.coords.longitude;
       console.log(pos.lat);
       const mapCenter = pos;
       let marker = new google.maps.Marker({
@@ -78,17 +80,19 @@ function search(){
     event.preventDefault();
     let userInput = $("#searchBar input").val();
     $.ajax({
-      url: `${MEETUP_URL}${userInput}&page=20&offset=5&key=${KEY}`,
+      url: `${MEETUP_URL}${userInput}&offset=5&key=${KEY}`,
       dataType: "JSONP",
       method: 'GET',
+      page: '40',
+      lat: centerLat,
+      lon: centerLon,
+
       // headers: {
       //   // 'Access-Control-Allow-Origin': '*',
       //   // 'Content-type': 'application/x-www-form-urlencoded',
       //   Authorization: `Bearer ${KEY}`
       // }
       success: function(result){
-        centerLat = result.data.city.lat;
-        centerLon = result.data.city.lon;
         eventMarkers = addMarkers(result.data.events);
         if(eventMarkers.length === 0){
           alert('No Events Listed, please try another keyword!')
