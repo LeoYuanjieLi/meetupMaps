@@ -191,7 +191,7 @@ function calDistance(lat1, lon1, lat2, lon2){
 function listView(markers,events){
   $(".js-list-button").click(event =>{
     $(".js-results").empty();
-    $('.js-results').append(`<button class="close-list">Close</button>`)
+    $('.js-results').append(`<button class="close-list">X</button>`)
     $('.js-results').append(`<div class="js-results-list"></div>`);
     console.log('function listView ran!');
     for(let i =0; i< events.length; i++){
@@ -205,12 +205,18 @@ function listView(markers,events){
 // create a single view of an event
 function singleView(marker,event){
   console.log('function singleView ran!')
+  let eventDescription;
+  if(event.description === undefined){
+    eventDescription = "Please see event detail on the website.";
+  }else{
+    eventDescription = event.description;
+  }
   return `
   <div class='single-view'>
     <h1>${event.name}</h1>
     <p>Distance to you: ${marker[1].toFixed(2)} Miles</p>
     <a class = "link" href = '${event.link}' target="_blank">Event Link</a>    
-    <div class="event-content-single-view">${event.description}</div>
+    <div class="event-content-single-view">${eventDescription}</div>
   </div>
   `
 }
@@ -231,5 +237,57 @@ function showListButton(markers){
     $('.js-list-button').append(`<button class="listButton">View in List</button>`)
   }
 }
+
+
+
+
+//-----------------------------Make the DIV element draggagle-------------------------------:
+dragElement(document.getElementById(("searchBar")));
+
+function dragElement(elmnt) {
+  var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
+  if (document.getElementById(elmnt.id + "header")) {
+    /* if present, the header is where you move the DIV from:*/
+    document.getElementById(elmnt.id + "header").onmousedown = dragMouseDown;
+  } else {
+    /* otherwise, move the DIV from anywhere inside the DIV:*/
+    elmnt.onmousedown = dragMouseDown;
+  }
+
+  function dragMouseDown(e) {
+    e = e || window.event;
+    // get the mouse cursor position at startup:
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    document.onmouseup = closeDragElement;
+    // call a function whenever the cursor moves:
+    document.onmousemove = elementDrag;
+  }
+
+  function elementDrag(e) {
+    e = e || window.event;
+    // calculate the new cursor position:
+    pos1 = pos3 - e.clientX;
+    pos2 = pos4 - e.clientY;
+    pos3 = e.clientX;
+    pos4 = e.clientY;
+    // set the element's new position:
+    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
+    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
+  }
+
+  function closeDragElement() {
+    /* stop moving when mouse button is released:*/
+    document.onmouseup = null;
+    document.onmousemove = null;
+  }
+}
+
+
+// ---------------------- draggable div end---------------------------------------------
+
+
+
+
 
 $(search);
