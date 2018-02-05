@@ -80,12 +80,10 @@ function search(){
     event.preventDefault();
     let userInput = $("#searchBar input").val();
     $.ajax({
-      url: `${MEETUP_URL}${userInput}&offset=5&key=${KEY}`,
+      url: `${MEETUP_URL}${userInput}&offset=5&key=${KEY}&lat=${centerLat}&lon=${centerLon}`,
       dataType: "JSONP",
       method: 'GET',
       page: '40',
-      lat: centerLat,
-      lon: centerLon,
 
       // headers: {
       //   // 'Access-Control-Allow-Origin': '*',
