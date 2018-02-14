@@ -123,15 +123,20 @@ main h2 {
 	z-index: 99;
 }
 
-
-.js-results-list {
-	background-color: pink;
+.js-results {
+	background-color: lightblue;
 	z-index: 1;
 	position: absolute;
-	top:140px;
-	left:10%;
-	width:80%;
+	top:160px;
+	left:7.5%;
+	right:7.5%;
 	height: 80%;
+	visibility: hidden;
+}
+
+.js-results-list {
+	z-index: 2;
+	position: relative;
 	display: flex;
 	flex-wrap: wrap;
 	overflow: scroll;
@@ -158,19 +163,34 @@ main h2 {
 }
 
 .event-content-single-view {
-	padding: 5px;
+	padding: 15px;
 }
 
+
+
+.sort-by-list {
+	position: absolute;
+	background-color: white;
+	font-size: 18px;
+	border-style: none;
+	border-radius: 5px;
+	z-index: 99;
+	float:right;
+	top:140px;
+
+}
 .close-list {
+	float:right;
 	color: white;
-	font-size:24px;
+	font-size:18px;
 	border-style: none;
 	background-color: black;
-	border-radius: 5px;
+	border-radius: 2px;
 	z-index: 99;
 	position: absolute;
 	top:140px;
-	right:11.25%;
+	right:8.5%;
+	margin-left: 5px;
 }
 
 .close-list:hover {

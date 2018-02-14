@@ -193,7 +193,9 @@ function calDistance(lat1, lon1, lat2, lon2){
 function listView(markers,events){
   $(".js-list-button").click(event =>{
     $(".js-results").empty();
-    $('.js-results').append(`<button class="close-list">X</button>`)
+    $(".js-results").css("visibility", "visible");
+    $('.js-results').append(`<button class="sort-by-list">Sort By List</button>`);
+    $('.js-results').append(`<button class="close-list">X</button>`);
     $('.js-results').append(`<div class="js-results-list"></div>`);
     console.log('function listView ran!');
     for(let i =0; i< events.length; i++){
@@ -227,6 +229,7 @@ function closeList(){
   $('.js-results').on("click", ".close-list", (event =>{
     console.log('function closeList ran!');
     $(".js-results").empty();
+    $(".js-results").css("visibility", "hidden");
   }))
 }
 
