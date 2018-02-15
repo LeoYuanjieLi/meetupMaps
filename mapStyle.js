@@ -43,24 +43,6 @@ const mapStyle =
     ]
   },
   {
-    "featureType": "landscape.natural.landcover",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#d1f9ca"
-      }
-    ]
-  },
-  {
-    "featureType": "landscape.natural.terrain",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#99f189"
-      }
-    ]
-  },
-  {
     "featureType": "poi",
     "elementType": "geometry",
     "stylers": [
@@ -84,6 +66,15 @@ const mapStyle =
     "stylers": [
       {
         "color": "#e5e5e5"
+      }
+    ]
+  },
+  {
+    "featureType": "poi.park",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#afb885"
       }
     ]
   },
@@ -164,16 +155,7 @@ const mapStyle =
     "elementType": "geometry",
     "stylers": [
       {
-        "color": "#c9c9c9"
-      }
-    ]
-  },
-  {
-    "featureType": "water",
-    "elementType": "geometry.fill",
-    "stylers": [
-      {
-        "color": "#cce6ff"
+        "color": "#8b8b8b"
       }
     ]
   },

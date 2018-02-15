@@ -20,11 +20,12 @@ let centerLon;
 let map;
 function initMap() {
   map = new google.maps.Map(document.getElementById('map'), {
+    mapTypeControl: false,
     center: {lat: 42.3770, lng: -71.1167},
     zoom: 10,
     styles: mapStyle
   });
-
+  
   // Try HTML5 geolocation.
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(mapPos) {
@@ -124,8 +125,8 @@ function addMarkers(events){
         scale:6,
         fillOpacity:opa,
         fillColor:'magenta',
-        strokeColor:'blue',
-        strokeWeight:2,
+        strokeColor:'magenta',
+        strokeWeight:4,
       },
     });
     markers.push([marker, distance]);
@@ -147,12 +148,33 @@ function showMarkers(markers, events){
 
   for(let i = 0; i < markers.length; i++){
     markers[i][0].setMap(map);
+    let eventDescription;
+    let eventLocalTime;
+    let eventLocalDate;
+    if(events[i].description === undefined){
+      eventDescription = "Please see event detail on the website.";
+    }else{
+      eventDescription = events[i].description;
+    }
+
+    if(events[i].local_time === undefined){
+      eventLocalTime = "Not Provided";
+    }else{
+      eventLocalTime = events[i].local_time;
+    }
+
+    if(events[i].local_date === undefined){
+      eventLocalDate = "Not Provided";
+    }else{
+      eventLocalDate = events[i].local_date;
+    }
     let contentString = `
     <div class = 'popUpWindow'>
     <h1>Event Name: ${events[i].name}</h1>
+    <p>Event Time(Local): ${eventLocalDate} at ${eventLocalTime}</p>
     <p>Distance to you: ${markers[i][1].toFixed(2)} Miles</p>
     <a class = "link" href = '${events[i].link}' target="_blank">Event Link</a>
-    <div class="eventContentPopUp">${events[i].description}</div>
+    <div class="eventContentPopUp">${eventDescription}</div>
     </div>
     `
     markers[i][0].addListener('click', function(){
@@ -194,8 +216,9 @@ function listView(markers,events){
   $(".js-list-button").click(event =>{
     $(".js-results").empty();
     $(".js-results").css("visibility", "visible");
-    $('.js-results').append(`<button class="close-list">X</button>`);
-    $('.js-results').append(`<button class="sort-by-list">Sort By List</button>`);
+    $('.js-results').append(`<button class="close-list">&#10005</button>`);
+    $('.js-results').append(`<button class="sort-by-list">Sort By Proximity</button>`);
+    $('.js-results').append(`<button class="sort-by-list">Sort By Time</button>`);
     $('.js-results').append(`<div class="js-results-list"></div>`);
     console.log('function listView ran!');
     for(let i =0; i< events.length; i++){
@@ -210,15 +233,32 @@ function listView(markers,events){
 function singleView(marker,event){
   console.log('function singleView ran!')
   let eventDescription;
+  let eventLocalTime;
+  let eventLocalDate;
   if(event.description === undefined){
     eventDescription = "Please see event detail on the website.";
   }else{
     eventDescription = event.description;
   }
+
+  if(event.local_time === undefined){
+    eventLocalTime = "Not Provided";
+  }else{
+    eventLocalTime = event.local_time;
+  }
+
+  if(event.local_date === undefined){
+    eventLocalDate = "Not Provided";
+  }else{
+    eventLocalDate = event.local_date;
+  }
   return `
   <div class='single-view'>
     <h1>${event.name}</h1>
-    <p>Distance to you: ${marker[1].toFixed(2)} Miles</p>
+    <div><span class="bold">Distance to you:</span><span>${marker[1].toFixed(2)} Miles</span></div>
+    <div><span class="bold">Event Time: </span><span>${eventLocalTime}</span></div>
+    <div><span class="bold">Event Date: </span><span>${eventLocalDate}</span></div>
+    <br>
     <a class = "link" href = '${event.link}' target="_blank">Event Link</a>    
     <div class="event-content-single-view">${eventDescription}</div>
   </div>

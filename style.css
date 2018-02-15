@@ -72,9 +72,10 @@ main h2 {
 	margin-bottom: 10px;
 	text-decoration: none;
 	padding:5px;
-	color: white;
+	font-weight: bold;
+	color: black;
 	font-size: 18px;
-	background-color: magenta;
+	background-color: lightblue;
 	border-radius: 5px;
 }
 
@@ -105,7 +106,7 @@ main h2 {
 #searchBar button {
 	font-size:18px;
 	height:30px;
-	color: lightblue;
+	color: white;
 	background-color: black;
 	border-style: none;
 	border-radius: 5px;
@@ -129,6 +130,8 @@ main h2 {
 }
 
 .js-results {
+	border-style: none;
+	border-radius: 5px;
 	background-color: white;
 	z-index: 1;
 	position: absolute;
@@ -141,10 +144,11 @@ main h2 {
 }
 
 .js-results:hover {
-    box-shadow: 0 0 1pt 1pt white;
+    box-shadow: 3px 3px black;
     opacity:1;
 }
 .js-results-list {
+	margin-left:3%;
 	margin-top: 5px;
 	z-index: 2;
 	position: relative;
@@ -157,7 +161,7 @@ main h2 {
 
 .single-view {
 	border-radius: 5px;
-	border: solid white 1px;
+	border: solid lightgrey 1px;
 	padding:10px;
 	opacity: 1;
 	margin:1%;
@@ -226,19 +230,28 @@ main h2 {
 /*scroll bar*/
 /* Let's get this party started */
 ::-webkit-scrollbar {
-    width: 12px;
+    width: 10px;
 }
  
 /* Track */
 ::-webkit-scrollbar-track {
-    -webkit-border-radius: 10px;
-    border-radius: 10px;
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
 }
  
 /* Handle */
 ::-webkit-scrollbar-thumb {
-    -webkit-border-radius: 10px;
+    -webkit-border-radius: 5px;
     border: 1px solid grey;
-    border-radius: 10px;
+    border-radius: 5px;
     background: whitesmoke;  
+}
+
+
+
+
+/*text styles*/
+
+.bold {
+	font-weight: bold;
 }
