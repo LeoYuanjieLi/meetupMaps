@@ -8,8 +8,11 @@ body {
 	margin:auto;
 }
 
-html, body, main {
+html, body, main{
+	width: 100%;
 	height: 100%;
+	margin:0;
+	padding:0;
 }
 
 main #heading{
@@ -31,7 +34,7 @@ main #searchBar{
 	z-index: 99;
 	padding:5px;
 	background-color: white;
-	top:50px;
+	top:60px;
 	left:5%;
 	position:absolute;
 }
@@ -77,6 +80,7 @@ main h2 {
 
 .link:hover {
 	background-color: pink;
+	color: black;
 }
 
 .eventContentPopUp {
@@ -109,6 +113,7 @@ main h2 {
 
 #searchBar button:hover {
 	background-color: pink;
+	color:black;
 }
 
 .listButton {
@@ -124,22 +129,30 @@ main h2 {
 }
 
 .js-results {
-	background-color: lightblue;
+	background-color: white;
 	z-index: 1;
 	position: absolute;
-	top:160px;
-	left:7.5%;
+	top:60px;
+	left:30%;
 	right:7.5%;
-	height: 80%;
+	height: 75%;
 	visibility: hidden;
+	opacity: 0.6;
 }
 
+.js-results:hover {
+    box-shadow: 0 0 1pt 1pt white;
+    opacity:1;
+}
 .js-results-list {
+	margin-top: 5px;
 	z-index: 2;
 	position: relative;
 	display: flex;
 	flex-wrap: wrap;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 90%;
 }
 
 .single-view {
@@ -150,10 +163,11 @@ main h2 {
 	margin:1%;
 	z-index: 99;
 	position: relative;
-	background-color: white;
-	width: 30%;
+	background-color: whitesmoke;
+	width: 47%;
 	height: 300px;
-	overflow: scroll;
+	overflow-y: scroll;
+	overflow-x: hidden;
 	overflow-wrap: break-word;
 }
 
@@ -169,34 +183,62 @@ main h2 {
 
 
 .sort-by-list {
-	position: absolute;
+	position: relative;
 	background-color: white;
 	font-size: 18px;
-	border-style: none;
-	border-radius: 5px;
+	border: 1px solid black;
+	border-radius: 2px;
 	z-index: 99;
-	float:right;
-	top:140px;
+	margin-left: 1%;
+	margin-top: 1%;
 
 }
+
+.sort-by-list:hover {
+	background-color: pink;
+	color: black;
+	border-color: pink;
+}
 .close-list {
-	float:right;
 	color: white;
 	font-size:18px;
 	border-style: none;
 	background-color: black;
 	border-radius: 2px;
 	z-index: 99;
-	position: absolute;
-	top:140px;
-	right:8.5%;
-	margin-left: 5px;
+	position: relative;
+	margin-left: 1%;
+	margin-top: 1%;
 }
 
 .close-list:hover {
-	background-color: blue;
+	background-color: pink;
+	color: black;
 }
 
 #searchBar:active {
-	box-shadow: 0 0 3pt 2pt blue;
+	box-shadow: 0 0 3pt 2pt lightblue;
+}
+
+
+
+
+/*scroll bar*/
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 12px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 10px;
+    border-radius: 10px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 10px;
+    border: 1px solid grey;
+    border-radius: 10px;
+    background: whitesmoke;  
 }

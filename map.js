@@ -194,8 +194,8 @@ function listView(markers,events){
   $(".js-list-button").click(event =>{
     $(".js-results").empty();
     $(".js-results").css("visibility", "visible");
-    $('.js-results').append(`<button class="sort-by-list">Sort By List</button>`);
     $('.js-results').append(`<button class="close-list">X</button>`);
+    $('.js-results').append(`<button class="sort-by-list">Sort By List</button>`);
     $('.js-results').append(`<div class="js-results-list"></div>`);
     console.log('function listView ran!');
     for(let i =0; i< events.length; i++){
@@ -248,7 +248,7 @@ function showListButton(markers){
 
 //-----------------------------Make the DIV element draggagle-------------------------------:
 dragElement(document.getElementById(("searchBar")));
-
+dragElement(document.getElementsByClassName("js-results"));
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   if (document.getElementById(elmnt.id + "header")) {

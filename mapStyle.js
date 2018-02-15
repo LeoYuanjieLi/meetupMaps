@@ -44,10 +44,19 @@ const mapStyle =
   },
   {
     "featureType": "landscape.natural.landcover",
-    "elementType": "geometry",
+    "elementType": "geometry.fill",
     "stylers": [
       {
-        "color": "#008000"
+        "color": "#d1f9ca"
+      }
+    ]
+  },
+  {
+    "featureType": "landscape.natural.terrain",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#99f189"
       }
     ]
   },
@@ -156,6 +165,15 @@ const mapStyle =
     "stylers": [
       {
         "color": "#c9c9c9"
+      }
+    ]
+  },
+  {
+    "featureType": "water",
+    "elementType": "geometry.fill",
+    "stylers": [
+      {
+        "color": "#cce6ff"
       }
     ]
   },
