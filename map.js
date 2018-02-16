@@ -5,7 +5,7 @@
 
 
 // meetUp URL
-const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&photo-host=public&text=`;
+const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&photo-host=public&topic_category=`;
 const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
@@ -84,7 +84,7 @@ function search(){
       url: `${MEETUP_URL}${userInput}&offset=5&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart`,
       dataType: "JSONP",
       method: 'GET',
-      page: '40',
+      page: '60',
 
       // headers: {
       //   // 'Access-Control-Allow-Origin': '*',
@@ -115,7 +115,8 @@ function addMarkers(events){
   for(let i = 0; i < events.length; i++){
     let eventLon = events[i].group.lon;
     let eventLat = events[i].group.lat;
-    let latLng = new google.maps.LatLng(eventLat, eventLon);
+    let adjLatLon = correctPutLocation(eventLat, eventLon);
+    let latLng = new google.maps.LatLng(adjLatLon[0], adjLatLon[1]);
     let distance = calDistance(eventLat, eventLon, centerLat, centerLon);
     let opa = parseFloat((1/Math.sqrt(distance)).toFixed(2), 10);
     let marker = new google.maps.Marker({
@@ -126,7 +127,7 @@ function addMarkers(events){
         fillOpacity:opa,
         fillColor:'magenta',
         strokeColor:'magenta',
-        strokeWeight:3,
+        strokeWeight:1,
       },
     });
     markers.push([marker, distance]);
@@ -137,6 +138,21 @@ function addMarkers(events){
 
 
 }
+
+// There is an issue need to be addressed: when showing the map, some markers have the exact same location, 
+// so, if one spot has been taken, the next one that shares the same location need to be put a little bit to the side
+
+function correctPutLocation(eventLat, eventLon){
+  // give the location a random coefficience from the center
+  let plusOrMinus = Math.floor(Math.random()*2) == 1 ? 1 : -1;
+  let dLat = Math.random()* 0.003 *plusOrMinus;
+  plusOrMinus = Math.floor(Math.random()*2) == 1 ? 1 : -1;
+  let dLon = Math.random()*0.003 *plusOrMinus;
+  let adjEventLat = dLat + eventLat;
+  let adjEventLon = dLon + eventLon;
+  return [adjEventLat, adjEventLon]
+}
+
 
 // show markers on the map, the markers should have an infowindow associate with it.
 function showMarkers(markers, events){
@@ -174,6 +190,7 @@ function showMarkers(markers, events){
     <p>Event Time(Local): ${eventLocalDate} at ${eventLocalTime}</p>
     <p>Distance to you: ${markers[i][1].toFixed(2)} Miles</p>
     <a class = "link" href = '${events[i].link}' target="_blank">Event Link</a>
+    <br>
     <div class="eventContentPopUp">${eventDescription}</div>
     </div>
     `
