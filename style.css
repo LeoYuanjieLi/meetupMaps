@@ -16,15 +16,15 @@ html, body, main{
 }
 
 main #heading{
+	right:3%;
 	margin:0;
 	border-radius: 5px;
-	box-shadow: 1px 1px black;
+	box-shadow: 1px 1px lightblue;
 	z-index: 99;
 	padding-left:10px;
 	padding-right: 10px;
-	background-color: white;
+	background-color: black;
 	top:10px;
-	left:45%;
 	position:fixed;
 }
 
@@ -40,8 +40,9 @@ main #searchBar{
 }
 
 main h2 {
+	color: white;
 	margin:0;
-	text-align: center;
+	text-align: right;
 
 }
 
@@ -136,9 +137,9 @@ main h2 {
 	z-index: 1;
 	position: absolute;
 	top:60px;
-	left:30%;
-	right:7.5%;
-	height: 75%;
+	left:40%;
+	right:3%;
+	height: 90%;
 	visibility: hidden;
 	opacity: 0.6;
 }

@@ -44,7 +44,7 @@ function initMap() {
             path: google.maps.SymbolPath.CIRCLE,
             scale:20,
             strokeWeight:0,
-            fillColor:'black',
+            fillColor:'lightblue',
             fillOpacity:0.4,
             strokeColor: "black",
             strokeWeight: 2
@@ -126,7 +126,7 @@ function addMarkers(events){
         fillOpacity:opa,
         fillColor:'magenta',
         strokeColor:'magenta',
-        strokeWeight:4,
+        strokeWeight:3,
       },
     });
     markers.push([marker, distance]);
