@@ -10,11 +10,15 @@ const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
 let centerLon;
+// EVENT_DIST_PAIR is to be used for storing the fetched data for sorting purpose.
+let EVENT_DIST_PAIR;
+// get user input
+let USER_INPUT = $("#searchBar input").val();
 // // this is for the overlay center circle
 // let overlay;
 // circleOverlay.prototype = new google.maps.OverlayView();
 
-// // -------------------some constants<end line>--------------
+// // -------------------some constants<end>--------------
 
 // initualize map
 let map;
@@ -72,16 +76,14 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 }
 
 
-
 // meetUp search
 function search(){
 
   let eventMarkers = [];
   $('#js-search').submit(event =>{
     event.preventDefault();
-    let userInput = $("#searchBar input").val();
     $.ajax({
-      url: `${MEETUP_URL}${userInput}&offset=5&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart`,
+      url: `${MEETUP_URL}${USER_INPUT}&offset=5&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart`,
       dataType: "JSONP",
       method: 'GET',
       page: '60',
@@ -92,6 +94,7 @@ function search(){
       //   Authorization: `Bearer ${KEY}`
       // }
       success: function(result){
+        cleanMarkers(eventMarkers);
         eventMarkers = addMarkers(result.data.events);
         if(eventMarkers.length === 0){
           alert('No Events Listed, please try another keyword!')
@@ -101,11 +104,30 @@ function search(){
         $(listView(eventMarkers, result.data.events));
         $(closeList);
         console.log(result.data);
+        // here we make a deep copy of all events. To use for sorting purposes.
+        let STORED_MARKERS = $.extend(true, [], eventMarkers);
+        let STORED_EVENTS = $.extend(true, [], result.data.events);
+        console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
+        EVENT_DIST_PAIR = [];
+        for (let i = 0; i<STORED_EVENTS.length; i++){
+          EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
+        }
+
+        console.log("The length of EVENT_DIST_PAIR is", EVENT_DIST_PAIR.length);
+
       } 
     })
-
-    cleanMarkers(eventMarkers);
     })
+}
+
+
+
+// clean markers on the map
+function cleanMarkers(markers){
+
+  for(let i = 0; i < markers.length; i++){
+    markers[i][0].setMap(null);
+  }
 }
 
 // add event location on map
@@ -157,7 +179,7 @@ function correctPutLocation(eventLat, eventLon){
 // show markers on the map, the markers should have an infowindow associate with it.
 function showMarkers(markers, events){
   let infowindow = new google.maps.InfoWindow({
-    maxWidth: 200,
+    maxWidth: 220,
     maxHeight:400,
 
   });
@@ -191,7 +213,6 @@ function showMarkers(markers, events){
     <p>Distance to you: ${markers[i][1].toFixed(2)} Miles</p>
     <a class = "link" href = '${events[i].link}' target="_blank">Event Link</a>
     <br>
-    <div class="eventContentPopUp">${eventDescription}</div>
     </div>
     `
     markers[i][0].addListener('click', function(){
@@ -206,23 +227,12 @@ function showMarkers(markers, events){
       infowindow.close();
     })
   }
-
+    // if user click on any button, the window should close as well. 
     $('button').click(event => {
       infowindow.close();
     })
 }
 
-
-
-
-
-// clean markers on the map
-function cleanMarkers(markers){
-
-  for(let i = 0; i < markers.length; i++){
-    markers[i][0].setMap(null);
-  }
-}
 
 // calculate distance given two points of latitude and longitude
 function calDistance(lat1, lon1, lat2, lon2){
@@ -242,20 +252,23 @@ function calDistance(lat1, lon1, lat2, lon2){
 }
 
 
-// create a list view of events
+// create a list view of events construct by an array of single views
 function listView(markers,events){
   $(".listButton").click(event =>{
     $(".js-results").empty();
     $(".js-results").css("visibility", "visible");
     $('.js-results').append(`<button class="close-list">&#10005</button>`);
-    $('.js-results').append(`<button class="sort-by-list">Sort By Proximity</button>`);
-    $('.js-results').append(`<button class="sort-by-list">Sort By Time</button>`);
-    $('.js-results').append(`<div class="js-results-list"></div>`);
+    $('.js-results').append(`<button class="sort-by-prox">Sort By Proximity</button>`);
+    $('.js-results').append(`<button class="sort-by-time">Sort By Time</button>`);
+    $('.js-results').append(`<div class="js-results-list">
+                             <div class = "part-one"></div>
+                             </div>`);
     console.log('function listView ran!');
     for(let i =0; i< events.length; i++){
-      $('.js-results-list').append(singleView(markers[i],events[i]));
-
+      $('.js-results-list .part-one').append(singleView(markers[i],events[i]));
     }
+
+     $('.js-results-list').append(`<div class="load-more"><button>Load More</button></div>`);
     
   })
 }
@@ -318,8 +331,7 @@ function showListButton(markers){
 
 
 //-----------------------------Make the DIV element draggagle-------------------------------:
-dragElement(document.getElementById(("searchBar")));
-dragElement(document.getElementsByClassName("js-results"));
+// dragElement(document.getElementById(("searchBar")));
 function dragElement(elmnt) {
   var pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
   if (document.getElementById(elmnt.id + "header")) {
@@ -363,7 +375,192 @@ function dragElement(elmnt) {
 // ---------------------- draggable div end---------------------------------------------
 
 
+// ---------------------------------Sorting Functions---------------------------------------------
+
+// sort the list events by proximity
+function sortProx(){
+  $('.js-results').on("click", '.sort-by-prox', event =>{
+    event.preventDefault();
+    console.log('sortProx ran!');
+    let sortedEvents = [];
+    let sortedDistance = [];
+    console.log("test", EVENT_DIST_PAIR.length);
+    for(let i = 0; i<EVENT_DIST_PAIR.length; i++){
+      sortedDistance.push(EVENT_DIST_PAIR[i][1]);
+    }
+
+    // sort the numbers first
+    sortedDistance.sort((a,b)=>{return a-b});
+
+    // store the EVENTS into a temp file because we need to change to old array
+    let EVENT_DIST_PAIR_temp = $.extend(true, [], EVENT_DIST_PAIR); 
+
+    // sort the event according to the distance
+    sortedDistance.forEach(function(key) {
+        var found = false;
+        EVENT_DIST_PAIR = EVENT_DIST_PAIR.filter(function(item) {
+            if(!found && item[1] == key) {
+                sortedEvents.push(item[0]);
+                found = true;
+                return false;
+            } else 
+                return true;
+        })
+    })
+
+    // recover our array 
+    EVENT_DIST_PAIR = EVENT_DIST_PAIR_temp;
 
 
+    console.log("STORED_EVENTS is", EVENT_DIST_PAIR);
+    console.log("sorted distance is", sortedDistance);
+    console.log("sorted events are", sortedEvents);
+    $('.part-one').empty();
+    for(let i = 0; i<sortedEvents.length; i++){
+
+      let eventDescription;
+      let eventLocalTime;
+      let eventLocalDate;
+      if(sortedEvents[i]["description"] === undefined){
+        eventDescription = "Please see event detail on the website.";
+      }else{
+        eventDescription = sortedEvents[i]["description"];
+      }
+
+      if(sortedEvents[i]["local_time"] === undefined){
+        eventLocalTime = "See on website";
+      }else{
+        eventLocalTime = sortedEvents[i]["local_time"];
+      }
+
+      if(sortedEvents[i]["local_date"] === undefined){
+        eventLocalDate = "See on website";
+      }else{
+        eventLocalDate = sortedEvents[i]["local_date"];
+      }
+      let singleContent = 
+      `
+      <div class='single-view'>
+        <h1>${sortedEvents[i]["name"]}</h1>
+        <div><span class="bold">Distance to you:</span><span>${sortedDistance[i].toFixed(2)} Miles</span></div>
+        <div><span class="bold">Event Time: </span><span>${eventLocalTime}</span></div>
+        <div><span class="bold">Event Date: </span><span>${eventLocalDate}</span></div>
+        <br>
+        <a class = "link" href = '${sortedEvents[i]["link"]}' target="_blank">Event Link</a>    
+        <div class="event-content-single-view">${eventDescription}</div>
+      </div>
+      `;
+      $('.part-one').append(singleContent);
+    }
+
+    console.log('now the length of EVENT_DIST_PAIR is', EVENT_DIST_PAIR.length);
+  })
+}
+
+
+
+// sort the list events by proximity
+function sortTime(){
+  $('.js-results').on("click", '.sort-by-time', event =>{
+    event.preventDefault();
+    console.log('sortTime ran!');
+    let sortedEvents = [];
+
+    let sortedTime = [];
+    for(let i = 0; i<EVENT_DIST_PAIR.length; i++){
+      sortedTime.push(EVENT_DIST_PAIR[i][0]["time"]);
+    }
+    // store the EVENTS into a temp file because we need to change to old array    
+    let EVENT_DIST_PAIR_temp = $.extend(true, [], EVENT_DIST_PAIR); 
+    // sort the numbers first
+    sortedTime.sort((a,b)=>{return a-b});
+
+    // sort the event according to the distance
+    sortedTime.forEach(function(key) {
+        var found = false;
+        EVENT_DIST_PAIR = EVENT_DIST_PAIR.filter(function(item) {
+            if(!found && item[0]["time"] == key) {
+                sortedEvents.push(item);
+                found = true;
+                return false;
+            } else 
+                return true;
+        })
+    })
+
+
+    // recover our array 
+    EVENT_DIST_PAIR = EVENT_DIST_PAIR_temp;
+
+
+    console.log("STORED_EVENTS is", EVENT_DIST_PAIR);
+    console.log("sorted time is", sortedTime);
+    console.log("sorted events are", sortedEvents);
+    $('.part-one').empty();
+
+    for(let i = 0; i<sortedTime.length; i++){
+
+      let eventDescription;
+      let eventLocalTime;
+      let eventLocalDate;
+      if(sortedEvents[i][0]["description"] === undefined){
+        eventDescription = "Please see event detail on the website.";
+      }else{
+        eventDescription = sortedEvents[i][0]["description"];
+      }
+
+      if(sortedEvents[i][0]["local_time"] === undefined){
+        eventLocalTime = "See on website";
+      }else{
+        eventLocalTime = sortedEvents[i][0]["local_time"];
+      }
+
+      if(sortedEvents[i][0]["local_date"] === undefined){
+        eventLocalDate = "See on website";
+      }else{
+        eventLocalDate = sortedEvents[i][0]["local_date"];
+      }
+      let singleContent = 
+      `
+      <div class='single-view'>
+        <h1>${sortedEvents[i][0]["name"]}</h1>
+        <div><span class="bold">Distance to you:</span><span>${sortedEvents[i][1].toFixed(2)} Miles</span></div>
+        <div><span class="bold">Event Time: </span><span>${eventLocalTime}</span></div>
+        <div><span class="bold">Event Date: </span><span>${eventLocalDate}</span></div>
+        <br>
+        <a class = "link" href = '${sortedEvents[i][0]["link"]}' target="_blank">Event Link</a>    
+        <div class="event-content-single-view">${eventDescription}</div>
+      </div>
+      `;
+      $('.part-one').append(singleContent);
+    }
+    
+  })
+}
+
+// ---------------------------------Sorting Functions Ends--------------------------------------------
+
+// -----------------Load more into page when user click on the load-more button-----------------------
+
+function loadmore(){
+  // TO DO
+}
+
+// -----------------Load more ends--------------------------------------------------------------------
+
+// -------------------------------------enter page----------------------------------------------------
+function enterPage(){
+  $('.cover-page button').click(event=>{
+    event.preventDefault();
+    $('.cover-page').remove();
+
+  })
+}
+// -------------------------------------enter page ends-----------------------------------------------
+
+// ----------------------------------Run the program--------------------------------------------------
 
 $(search);
+$(sortProx);
+$(sortTime);
+$(enterPage);

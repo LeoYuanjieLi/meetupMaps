@@ -107,8 +107,9 @@ main h2 {
 }
 
 
-
 #searchBar button {
+	float:right;
+	margin:right:5px;
 	font-size:18px;
 	height:30px;
 	color: white;
@@ -129,7 +130,7 @@ main h2 {
 	border-style: none;
 	position: relative;
 	height: 30px;
-	z-index: 99;
+	z-index: 10;
 }
 
 .js-results {
@@ -148,15 +149,22 @@ main h2 {
 }
 
 .js-results-list {
-	margin-left:3%;
 	margin-top: 5px;
 	z-index: 2;
 	position: relative;
+	display: block;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 90%;
+}
+
+.part-one {
+	margin:0;
+	margin-left: 5%;
 	display: flex;
 	flex-wrap: wrap;
 	overflow-y: scroll;
 	overflow-x: hidden;
-	height: 90%;
 }
 
 .single-view {
@@ -165,7 +173,7 @@ main h2 {
 	padding:10px;
 	opacity: 1;
 	margin:1%;
-	z-index: 99;
+	z-index: 10;
 	position: relative;
 	background-color: whitesmoke;
 	width: 98%;
@@ -186,19 +194,19 @@ main h2 {
 
 
 
-.sort-by-list {
+.sort-by-prox, .sort-by-time{
 	position: relative;
 	background-color: white;
 	font-size: 18px;
 	border: 1px solid black;
 	border-radius: 2px;
-	z-index: 99;
+	z-index: 10;
 	margin-left: 1%;
 	margin-top: 1%;
 
 }
 
-.sort-by-list:hover {
+.sort-by-prox:hover, .sort-by-time:hover {
 	background-color: pink;
 	color: black;
 	border-color: pink;
@@ -209,7 +217,7 @@ main h2 {
 	border-style: none;
 	background-color: black;
 	border-radius: 2px;
-	z-index: 99;
+	z-index: 10;
 	position: relative;
 	margin-left: 1%;
 	margin-top: 1%;
@@ -257,16 +265,82 @@ main h2 {
 }
 
 
+/*load more*/
+
+.load-more {
+	margin:0;
+	margin-top: 5px;
+	text-align: center;
+}
+.load-more button{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: white;
+	border: 1px darkgrey solid;
+	color:black;
+	text-align: center;
+}
+
+.cover-page{
+	text-align: center;
+	top:0;
+	position: absolute;
+	background-color: white;
+	width: 100%;
+	height: 100%;
+	margin:0;
+	z-index: 99;
+	opacity: 0.8;
+
+}
+
+.cover-page h1 {
+	margin:0;
+	font-size:60px;
+	position: relative;
+	text-align: center;
+}
+
+.cover-page img {
+	margin:0;
+	position: relative;
+	text-align: center;
+	width: 50%;
+	height: 50%;
+}
+
+.cover-page button {
+	margin:0;
+	position: relative;
+	width: 160px;
+	height: 40px;
+	background-color: black;
+	color: white;
+	border-style: none;
+	border-radius: 5px;
+
+}
+
+.cover-page button:hover {
+	color:black;
+	background-color: lightblue;
+	border: 1px solid black;
+
+}
 
 
+
+
+/*responsive design codes*/
 
 @media only screen and (max-width: 960px) and (min-width: 500px) {
 	main #searchBar{
 		margin:0;
-		width: 50%;
+		width: 60%;
 		border-radius: 5px;
 		box-shadow: 1px 1px black;
-		z-index: 99;
+		z-index: 1;
 		padding:5px;
 		background-color: white;
 		top:60px;
@@ -285,7 +359,7 @@ main h2 {
 		top:150px;
 		left:2.5%;
 		right:2.5%;
-		height: 90%;
+		height: 75%;
 		visibility: hidden;
 		opacity:1;
 	    box-shadow: 3px 3px black;
@@ -298,7 +372,7 @@ main h2 {
 		padding:10px;
 		opacity: 1;
 		margin:1%;
-		z-index: 99;
+		z-index: 10;
 		position: relative;
 		background-color: whitesmoke;
 		width: 47%;
@@ -310,7 +384,7 @@ main h2 {
 
 	#searchBar input {
 		color:blue;
-		width: 80%;
+		width: 70%;
 		font-size: 18px;
 		height:30px;
 		border: solid 1px lightgrey;
@@ -326,7 +400,7 @@ main h2 {
 		width: 30%;
 		border-radius: 5px;
 		box-shadow: 1px 1px black;
-		z-index: 99;
+		z-index: 10;
 		padding:5px;
 		background-color: white;
 		top:60px;
@@ -359,7 +433,7 @@ main h2 {
 		padding:10px;
 		opacity: 1;
 		margin:1%;
-		z-index: 99;
+		z-index: 10;
 		position: relative;
 		background-color: whitesmoke;
 		width: 47%;
@@ -371,7 +445,7 @@ main h2 {
 
 	#searchBar input {
 		color:blue;
-		width: 80%;
+		width: 77%;
 		font-size: 18px;
 		height:30px;
 		border: solid 1px lightgrey;
@@ -385,7 +459,7 @@ main h2 {
 		width: 22.5%;
 		border-radius: 5px;
 		box-shadow: 1px 1px black;
-		z-index: 99;
+		z-index: 10;
 		padding:5px;
 		background-color: white;
 		top:60px;
@@ -418,7 +492,7 @@ main h2 {
 		padding:10px;
 		opacity: 1;
 		margin:1%;
-		z-index: 99;
+		z-index: 1;
 		position: relative;
 		background-color: whitesmoke;
 		width: 47%;
@@ -428,5 +502,13 @@ main h2 {
 		overflow-wrap: break-word;
 	}
 
+	#searchBar input {
+		color:blue;
+		width: 75%;
+		font-size: 18px;
+		height:30px;
+		border: solid 1px lightgrey;
+		border-radius: 2px;
+	}
 
 }
