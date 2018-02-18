@@ -16,11 +16,11 @@ html, body, main{
 }
 
 main #heading{
-	right:3%;
+	right:2.5%;
 	margin:0;
 	border-radius: 5px;
 	box-shadow: 1px 1px lightblue;
-	z-index: 99;
+	z-index: 1;
 	padding-left:10px;
 	padding-right: 10px;
 	background-color: black;
@@ -29,13 +29,15 @@ main #heading{
 }
 
 main #searchBar{
+	width: 95%;
 	border-radius: 5px;
 	box-shadow: 1px 1px black;
-	z-index: 99;
+	z-index: 1;
 	padding:5px;
 	background-color: white;
 	top:60px;
-	left:5%;
+	left:2.5%;
+	margin:0;
 	position:absolute;
 }
 
@@ -93,13 +95,15 @@ main h2 {
 
 #searchBar {
 	display: inline-block;
+	margin:5px;
 }
 #searchBar input {
 	color:blue;
+	width: 75%;
 	font-size: 18px;
-	width: 300px;
 	height:30px;
-	border-style: solid 1px;
+	border: solid 1px lightgrey;
+	border-radius: 2px;
 }
 
 
@@ -118,15 +122,13 @@ main h2 {
 	color:black;
 }
 
+
 .listButton {
 	margin-top:5px;
 	border-radius: 5px;
 	border-style: none;
-	color: white;
-	background-color: darkblue;
 	position: relative;
 	height: 30px;
-	float:right;
 	z-index: 99;
 }
 
@@ -134,20 +136,17 @@ main h2 {
 	border-style: none;
 	border-radius: 5px;
 	background-color: white;
-	z-index: 1;
+	z-index: 4;
 	position: absolute;
-	top:60px;
-	left:40%;
-	right:3%;
-	height: 90%;
+	top:0px;
+	left:0%;
+	right:0%;
+	height: 100%;
 	visibility: hidden;
-	opacity: 0.6;
+	opacity: 1;
+	box-shadow: 3px 3px black;
 }
 
-.js-results:hover {
-    box-shadow: 3px 3px black;
-    opacity:1;
-}
 .js-results-list {
 	margin-left:3%;
 	margin-top: 5px;
@@ -169,7 +168,7 @@ main h2 {
 	z-index: 99;
 	position: relative;
 	background-color: whitesmoke;
-	width: 47%;
+	width: 98%;
 	height: 300px;
 	overflow-y: scroll;
 	overflow-x: hidden;
@@ -255,4 +254,179 @@ main h2 {
 
 .bold {
 	font-weight: bold;
+}
+
+
+
+
+
+@media only screen and (max-width: 960px) and (min-width: 500px) {
+	main #searchBar{
+		margin:0;
+		width: 50%;
+		border-radius: 5px;
+		box-shadow: 1px 1px black;
+		z-index: 99;
+		padding:5px;
+		background-color: white;
+		top:60px;
+		left:5%;
+		position:absolute;
+	}
+
+
+	.js-results {
+		border-style: none;
+		border-radius: 5px;
+		background-color: white;
+		z-index: 1;
+		margin:0;
+		position: absolute;
+		top:150px;
+		left:2.5%;
+		right:2.5%;
+		height: 90%;
+		visibility: hidden;
+		opacity:1;
+	    box-shadow: 3px 3px black;
+	}
+
+
+	.single-view {
+		border-radius: 5px;
+		border: solid lightgrey 1px;
+		padding:10px;
+		opacity: 1;
+		margin:1%;
+		z-index: 99;
+		position: relative;
+		background-color: whitesmoke;
+		width: 47%;
+		height: 300px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		overflow-wrap: break-word;
+	}
+
+	#searchBar input {
+		color:blue;
+		width: 80%;
+		font-size: 18px;
+		height:30px;
+		border: solid 1px lightgrey;
+		border-radius: 2px;
+	}
+
+}
+
+
+@media only screen and (min-width: 960px) and (max-width: 1280px) {
+	main #searchBar{
+		margin:0;
+		width: 30%;
+		border-radius: 5px;
+		box-shadow: 1px 1px black;
+		z-index: 99;
+		padding:5px;
+		background-color: white;
+		top:60px;
+		left:5%;
+		position:absolute;
+	}
+
+	.js-results {
+		border-style: none;
+		border-radius: 5px;
+		background-color: white;
+		z-index: 1;
+		position: absolute;
+		top:60px;
+		left:40%;
+		right:3%;
+		height: 90%;
+		visibility: hidden;
+		opacity: 0.6;
+	}
+
+	.js-results:hover {
+	    box-shadow: 3px 3px black;
+	    opacity:1;
+	}	
+
+	.single-view {
+		border-radius: 5px;
+		border: solid lightgrey 1px;
+		padding:10px;
+		opacity: 1;
+		margin:1%;
+		z-index: 99;
+		position: relative;
+		background-color: whitesmoke;
+		width: 47%;
+		height: 300px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		overflow-wrap: break-word;
+	}
+
+	#searchBar input {
+		color:blue;
+		width: 80%;
+		font-size: 18px;
+		height:30px;
+		border: solid 1px lightgrey;
+		border-radius: 2px;
+	}
+}
+
+@media only screen and (min-width: 1280px) {
+	main #searchBar{
+		margin:0;
+		width: 22.5%;
+		border-radius: 5px;
+		box-shadow: 1px 1px black;
+		z-index: 99;
+		padding:5px;
+		background-color: white;
+		top:60px;
+		left:5%;
+		position:absolute;
+	}
+
+	.js-results {
+		border-style: none;
+		border-radius: 5px;
+		background-color: white;
+		z-index: 1;
+		position: absolute;
+		top:60px;
+		left:40%;
+		right:3%;
+		height: 90%;
+		visibility: hidden;
+		opacity: 0.6;
+	}
+
+	.js-results:hover {
+	    box-shadow: 3px 3px black;
+	    opacity:1;
+	}	
+
+	.single-view {
+		border-radius: 5px;
+		border: solid lightgrey 1px;
+		padding:10px;
+		opacity: 1;
+		margin:1%;
+		z-index: 99;
+		position: relative;
+		background-color: whitesmoke;
+		width: 47%;
+		height: 300px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		overflow-wrap: break-word;
+	}
+
+
 }

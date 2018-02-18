@@ -51,7 +51,6 @@ function initMap() {
           },
         map: map
       });
-      // setContent('Location found.');
       map.setCenter(pos);
     }, function() {
       handleLocationError(true, infowindow, map.getCenter());
@@ -76,6 +75,7 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 // meetUp search
 function search(){
+
   let eventMarkers = [];
   $('#js-search').submit(event =>{
     event.preventDefault();
@@ -157,7 +157,7 @@ function correctPutLocation(eventLat, eventLon){
 // show markers on the map, the markers should have an infowindow associate with it.
 function showMarkers(markers, events){
   let infowindow = new google.maps.InfoWindow({
-    maxWidth: 400,
+    maxWidth: 200,
     maxHeight:400,
 
   });
@@ -198,9 +198,23 @@ function showMarkers(markers, events){
       infowindow.open(map, markers[i][0])
       infowindow.setContent(contentString);
       infowindow.open(map, markers[i][0]);
+
     });
+
+    // if user click on the map, the window should close
+    map.addListener('click', function(){
+      infowindow.close();
+    })
   }
+
+    $('button').click(event => {
+      infowindow.close();
+    })
 }
+
+
+
+
 
 // clean markers on the map
 function cleanMarkers(markers){
@@ -230,7 +244,7 @@ function calDistance(lat1, lon1, lat2, lon2){
 
 // create a list view of events
 function listView(markers,events){
-  $(".js-list-button").click(event =>{
+  $(".listButton").click(event =>{
     $(".js-results").empty();
     $(".js-results").css("visibility", "visible");
     $('.js-results').append(`<button class="close-list">&#10005</button>`);
