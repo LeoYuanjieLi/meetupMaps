@@ -12,8 +12,8 @@ let centerLat;
 let centerLon;
 // EVENT_DIST_PAIR is to be used for storing the fetched data for sorting purpose.
 let EVENT_DIST_PAIR;
-// get user input
-let USER_INPUT = $("#searchBar input").val();
+// declare user input
+let USER_INPUT;
 // // this is for the overlay center circle
 // let overlay;
 // circleOverlay.prototype = new google.maps.OverlayView();
@@ -43,19 +43,27 @@ function initMap() {
       console.log(pos.lat);
       const mapCenter = pos;
       let marker = new google.maps.Marker({
-          position:mapCenter,
-          icon: {
-            path: google.maps.SymbolPath.CIRCLE,
-            scale:20,
-            strokeWeight:0,
-            fillColor:'lightblue',
-            fillOpacity:0.4,
-            strokeColor: "black",
-            strokeWeight: 2
-          },
-        map: map
+        map: map,
+        scale:0.6,
+        draggable: false,
+        animation: google.maps.Animation.BOUNCE,
+        position: mapCenter
       });
+      // let marker = new google.maps.Marker({
+      //     position:mapCenter,
+      //     icon: {
+      //       path: google.maps.SymbolPath.CIRCLE,
+      //       scale:20,
+      //       strokeWeight:0,
+      //       fillColor:'lightblue',
+      //       fillOpacity:0.4,
+      //       strokeColor: "black",
+      //       strokeWeight: 2,
+      //     },
+      //   map: map
+      // });
       map.setCenter(pos);
+
     }, function() {
       handleLocationError(true, infowindow, map.getCenter());
     });
@@ -78,10 +86,13 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 // meetUp search
 function search(){
-
   let eventMarkers = [];
   $('#js-search').submit(event =>{
     event.preventDefault();
+    // if there are list viewing, close it because of user re-searched.
+    $(".js-results").css("visibility", "hidden");
+    // get user input
+    USER_INPUT = $("#searchBar input").val();
     $.ajax({
       url: `${MEETUP_URL}${USER_INPUT}&offset=5&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart`,
       dataType: "JSONP",
@@ -102,7 +113,6 @@ function search(){
         showListButton(eventMarkers);
         showMarkers(eventMarkers, result.data.events);
         $(listView(eventMarkers, result.data.events));
-        $(closeList);
         console.log(result.data);
         // here we make a deep copy of all events. To use for sorting purposes.
         let STORED_MARKERS = $.extend(true, [], eventMarkers);
@@ -564,3 +574,4 @@ $(search);
 $(sortProx);
 $(sortTime);
 $(enterPage);
+$(closeList);

@@ -363,8 +363,12 @@ main h2 {
   right: 0;
 }
 
+/*----------------Animate the current location marker------------------------------------------*/
 
-/*responsive design codes*/
+
+/*----------------Animate the current location marker ends------------------------------------*/
+
+/*--------------------------------responsive design codes--------------------------------------*/
 /*landscape*/
 @media only screen and (max-width: 500px) and (orientation : landscape){
 	.cover-page p {
