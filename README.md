@@ -4,7 +4,12 @@ show events around you
 This app allows user to easily find meetup events that they interested in on a map interface, 
 where people can find the location of the event, time, distance to current location and detail descriptions
 ## Screen Shots
-
+### Entering Page
+![alt text](https://raw.githubusercontent.com/LeoYuanjieLi/meetupMaps/master/Resources/ScreenShot1.JPG)
+### Main Map Interface
+![alt text](https://raw.githubusercontent.com/LeoYuanjieLi/meetupMaps/master/Resources/ScreenShot2.JPG)
+### List View Interface
+![alt text](https://raw.githubusercontent.com/LeoYuanjieLi/meetupMaps/master/Resources/ScreenShot3.JPG)
 ## Features
 
 #### Search events by category around user's location
@@ -24,3 +29,17 @@ Javascript
 JQuery
 
 HTML + CSS
+
+
+## Contributor 
+
+Yuanjie Li
+
+## Thanks to
+Aaron Sams
+
+Wojciech Kwiatek
+
+Austen Weinhart
+
+& my Sabi
