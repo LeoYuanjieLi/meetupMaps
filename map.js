@@ -14,6 +14,7 @@ let centerLon;
 let EVENT_DIST_PAIR;
 // declare user input
 let USER_INPUT;
+let STORED_RESPONSE;
 // // this is for the overlay center circle
 // let overlay;
 // circleOverlay.prototype = new google.maps.OverlayView();
@@ -93,6 +94,12 @@ function search(){
     $(".js-results").css("visibility", "hidden");
     // get user input
     USER_INPUT = $("#searchBar input").val();
+    if(hasNumber(USER_INPUT)){
+      alert("number is not allowed!");
+    }else if(hasSpecialChar(USER_INPUT)){
+      alert("special character is not allowed!")
+    }
+    else{
     $.ajax({
       url: `${MEETUP_URL}${USER_INPUT}&offset=5&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart`,
       dataType: "JSONP",
@@ -104,16 +111,22 @@ function search(){
       //   // 'Content-type': 'application/x-www-form-urlencoded',
       //   Authorization: `Bearer ${KEY}`
       // }
+
+
+      // beforeSend: function(jqXHR, settings) {
+      //     document.write(settings.url);
+      //   }, 
       success: function(result){
         cleanMarkers(eventMarkers);
         eventMarkers = addMarkers(result.data.events);
         if(eventMarkers.length === 0){
           alert('No Events Listed, please try another keyword!')
         }
+
         showListButton(eventMarkers);
         showMarkers(eventMarkers, result.data.events);
         $(listView(eventMarkers, result.data.events));
-        console.log(result.data);
+        console.log(result);
         // here we make a deep copy of all events. To use for sorting purposes.
         let STORED_MARKERS = $.extend(true, [], eventMarkers);
         let STORED_EVENTS = $.extend(true, [], result.data.events);
@@ -123,10 +136,11 @@ function search(){
           EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
         }
 
-        console.log("The length of EVENT_DIST_PAIR is", EVENT_DIST_PAIR.length);
+        // console.log("The length of EVENT_DIST_PAIR is", EVENT_DIST_PAIR.length);
+      }
 
-      } 
-    })
+
+    })}
     })
 }
 
@@ -177,9 +191,9 @@ function addMarkers(events){
 function correctPutLocation(eventLat, eventLon){
   // give the location a random coefficience from the center
   let plusOrMinus = Math.floor(Math.random()*2) == 1 ? 1 : -1;
-  let dLat = Math.random()* 0.003 *plusOrMinus;
+  let dLat = Math.random()* 0.001 *plusOrMinus;
   plusOrMinus = Math.floor(Math.random()*2) == 1 ? 1 : -1;
-  let dLon = Math.random()*0.003 *plusOrMinus;
+  let dLon = Math.random()*0.001 *plusOrMinus;
   let adjEventLat = dLat + eventLat;
   let adjEventLon = dLon + eventLon;
   return [adjEventLat, adjEventLon]
@@ -568,6 +582,18 @@ function enterPage(){
 }
 // -------------------------------------enter page ends-----------------------------------------------
 
+// --------------------------------------check if contains numbers in string--------------------------
+
+function hasNumber(str) {
+  return /\d/.test(str);
+}
+// --------------------------------------check if contains numbers in string end----------------------
+
+// --------------------------------------check if contains special char ------------------------------
+function hasSpecialChar(str){
+ return /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?@]/g.test(str);
+}
+// --------------------------------------check if contains special char end --------------------------
 // ----------------------------------Run the program--------------------------------------------------
 
 $(search);
