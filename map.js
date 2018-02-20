@@ -211,7 +211,6 @@ function showMarkers(markers, events){
     markers[i][0].setMap(map);
     let eventDescription;
     let eventLocalTime;
-    let eventLocalDate;
     if(events[i].description === undefined){
       eventDescription = "Please see event detail on the website.";
     }else{
@@ -221,8 +220,9 @@ function showMarkers(markers, events){
     if(events[i].time === undefined){
       eventLocalTime = "Not Provided";
     }else{
-      eventLocalTime = Date(events[i].time + events[i].utc_offset);
+      eventLocalTime = new Date(events[i].time + events[i].utc_offset);
     }
+    console.log(eventLocalTime);
     let contentString = `
     <div class = 'popUpWindow'>
     <h1>Event Name: ${events[i].name}</h1>
@@ -295,7 +295,6 @@ function singleView(marker,event){
   console.log('function singleView ran!')
   let eventDescription;
   let eventLocalTime;
-  let eventLocalDate;
   if(event.description === undefined){
     eventDescription = "Please see event detail on the website.";
   }else{
@@ -305,14 +304,9 @@ function singleView(marker,event){
   if(event.time === undefined){
     eventLocalTime = "Not Provided";
   }else{
-    eventLocalTime = Date(event.time+event.utc_offset);
+    eventLocalTime = new Date(event.time+event.utc_offset);
   }
 
-  if(event.local_date === undefined){
-    eventLocalDate = "Not Provided";
-  }else{
-    eventLocalDate = event.local_date;
-  }
   return `
   <div class='single-view'>
     <h1>${event.name}</h1>
@@ -445,7 +439,7 @@ function sortProx(){
       if(sortedEvents[i]["time"] === undefined){
         eventLocalTime = "See on website";
       }else{
-        eventLocalTime = Date(sortedEvents[i]["time"] +sortedEvents[i]["utc_offset"]);
+        eventLocalTime = new Date(sortedEvents[i]["time"] +sortedEvents[i]["utc_offset"]);
       }
 
       let singleContent = 
@@ -511,7 +505,7 @@ function sortTime(){
 
       let eventDescription;
       let eventLocalTime;
-      let eventLocalDate;
+
       if(sortedEvents[i][0]["description"] === undefined){
         eventDescription = "Please see event detail on the website.";
       }else{
@@ -521,7 +515,7 @@ function sortTime(){
       if(sortedEvents[i][0]["time"] === undefined){
         eventLocalTime = "See on website";
       }else{
-        eventLocalTime = Date(sortedEvents[i][0]["time"] +sortedEvents[i][0]["utc_offset"]);
+        eventLocalTime = new Date(sortedEvents[i][0]["time"] +sortedEvents[i][0]["utc_offset"]);
       }
 
       let singleContent = 
