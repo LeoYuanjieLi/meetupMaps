@@ -14,6 +14,7 @@ let centerLon;
 let EVENT_DIST_PAIR;
 // declare user input
 let USER_INPUT;
+// declare the result URL, we will get it when user first click on search, we will save the 'next link' for 'load-more' function
 let STORED_RESPONSE;
 // // this is for the overlay center circle
 // let overlay;
@@ -50,19 +51,7 @@ function initMap() {
         animation: google.maps.Animation.BOUNCE,
         position: mapCenter
       });
-      // let marker = new google.maps.Marker({
-      //     position:mapCenter,
-      //     icon: {
-      //       path: google.maps.SymbolPath.CIRCLE,
-      //       scale:20,
-      //       strokeWeight:0,
-      //       fillColor:'lightblue',
-      //       fillOpacity:0.4,
-      //       strokeColor: "black",
-      //       strokeWeight: 2,
-      //     },
-      //   map: map
-      // });
+
       map.setCenter(pos);
 
     }, function() {
@@ -107,6 +96,7 @@ function search(){
       page: '20',
 
       success: function(result){
+        STORED_RESPONSE = result;
         cleanMarkers(eventMarkers);
         eventMarkers = addMarkers(result.results);
         if(eventMarkers.length === 0){
@@ -116,11 +106,11 @@ function search(){
         showListButton(eventMarkers);
         showMarkers(eventMarkers, result.results);
         $(listView(eventMarkers, result.results));
-        console.log(result);
+        // console.log(result);
         // here we make a deep copy of all events. To use for sorting purposes.
         let STORED_MARKERS = $.extend(true, [], eventMarkers);
         let STORED_EVENTS = $.extend(true, [], result.results);
-        console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
+        // console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
         EVENT_DIST_PAIR = [];
         for (let i = 0; i<STORED_EVENTS.length; i++){
           EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
@@ -149,7 +139,7 @@ function addMarkers(events){
 // events is an array of events
   let markers = [];
   for(let i = 0; i < events.length; i++){
-    console.log(events[i].venue);
+    // console.log(events[i].venue);
     let eventLon;
     let eventLat;
     if(events[i].venue === undefined){
@@ -159,7 +149,7 @@ function addMarkers(events){
       eventLon = events[i].venue.lon;
       eventLat = events[i].venue.lat;
     };
-    console.log(eventLat,eventLon);
+    // console.log(eventLat,eventLon);
     let adjLatLon = correctPutLocation(eventLat, eventLon);
     let latLng = new google.maps.LatLng(adjLatLon[0], adjLatLon[1]);
     let distance = calDistance(eventLat, eventLon, centerLat, centerLon);
@@ -176,7 +166,7 @@ function addMarkers(events){
       },
     });
     markers.push([marker, distance]);
-    console.log(opa);
+
   }
 
   return markers
@@ -222,7 +212,7 @@ function showMarkers(markers, events){
     }else{
       eventLocalTime = new Date(events[i].time + events[i].utc_offset);
     }
-    console.log(eventLocalTime);
+    // console.log(eventLocalTime);
     let contentString = `
     <div class = 'popUpWindow'>
     <h1>Event Name: ${events[i].name}</h1>
@@ -280,7 +270,7 @@ function listView(markers,events){
     $('.js-results').append(`<div class="js-results-list">
                              <div class = "part-one"></div>
                              </div>`);
-    console.log('function listView ran!');
+    // console.log('function listView ran!');
     for(let i =0; i< events.length; i++){
       $('.js-results-list .part-one').append(singleView(markers[i],events[i]));
     }
@@ -292,7 +282,7 @@ function listView(markers,events){
 
 // create a single view of an event
 function singleView(marker,event){
-  console.log('function singleView ran!')
+  // console.log('function singleView ran!');
   let eventDescription;
   let eventLocalTime;
   if(event.description === undefined){
@@ -391,10 +381,10 @@ function dragElement(elmnt) {
 function sortProx(){
   $('.js-results').on("click", '.sort-by-prox', event =>{
     event.preventDefault();
-    console.log('sortProx ran!');
+    // console.log('sortProx ran!');
     let sortedEvents = [];
     let sortedDistance = [];
-    console.log("test", EVENT_DIST_PAIR.length);
+    // console.log("test", EVENT_DIST_PAIR.length);
     for(let i = 0; i<EVENT_DIST_PAIR.length; i++){
       sortedDistance.push(EVENT_DIST_PAIR[i][1]);
     }
@@ -422,9 +412,9 @@ function sortProx(){
     EVENT_DIST_PAIR = EVENT_DIST_PAIR_temp;
 
 
-    console.log("STORED_EVENTS is", EVENT_DIST_PAIR);
-    console.log("sorted distance is", sortedDistance);
-    console.log("sorted events are", sortedEvents);
+    // console.log("STORED_EVENTS is", EVENT_DIST_PAIR);
+    // console.log("sorted distance is", sortedDistance);
+    // console.log("sorted events are", sortedEvents);
     $('.part-one').empty();
     for(let i = 0; i<sortedEvents.length; i++){
 
@@ -456,7 +446,7 @@ function sortProx(){
       $('.part-one').append(singleContent);
     }
 
-    console.log('now the length of EVENT_DIST_PAIR is', EVENT_DIST_PAIR.length);
+    // console.log('now the length of EVENT_DIST_PAIR is', EVENT_DIST_PAIR.length);
   })
 }
 
@@ -466,7 +456,7 @@ function sortProx(){
 function sortTime(){
   $('.js-results').on("click", '.sort-by-time', event =>{
     event.preventDefault();
-    console.log('sortTime ran!');
+    // console.log('sortTime ran!');
     let sortedEvents = [];
 
     let sortedTime = [];
@@ -496,9 +486,9 @@ function sortTime(){
     EVENT_DIST_PAIR = EVENT_DIST_PAIR_temp;
 
 
-    console.log("STORED_EVENTS is", EVENT_DIST_PAIR);
-    console.log("sorted time is", sortedTime);
-    console.log("sorted events are", sortedEvents);
+    // console.log("STORED_EVENTS is", EVENT_DIST_PAIR);
+    // console.log("sorted time is", sortedTime);
+    // console.log("sorted events are", sortedEvents);
     $('.part-one').empty();
 
     for(let i = 0; i<sortedTime.length; i++){
@@ -541,6 +531,37 @@ function sortTime(){
 
 function loadmore(){
   // TO DO
+  $(".js-results").on( "click", ".load-more button", event =>{
+    // console.log('load-more function ran, and the link is', STORED_RESPONSE.meta);
+    if (STORED_RESPONSE["meta"]["next"] !== ""){
+      let eventMarkers = [];
+      $.ajax({
+                url: STORED_RESPONSE["meta"]["next"],
+                dataType: "JSONP",
+                method: 'GET',
+                page: '20',
+                success: function(result){
+                  STORED_RESPONSE = result;
+                  console.log("the new response is", result);
+                  eventMarkers = addMarkers(result.results);
+                  showMarkers(eventMarkers, result.results);
+                  $(listView(eventMarkers, result.results));
+                  // console.log(result);
+                  // here we make a deep copy of all events. To use for sorting purposes.
+                  let STORED_MARKERS = $.extend(true, [], eventMarkers);
+                  let STORED_EVENTS = $.extend(true, [], result.results);
+                  // console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
+                  EVENT_DIST_PAIR = [];
+                  for (let i = 0; i<STORED_EVENTS.length; i++){
+                    EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
+                  }
+                }
+            })
+
+
+    }else{console.log('no more events!')}
+
+  })
 }
 
 // -----------------Load more ends--------------------------------------------------------------------
@@ -574,3 +595,4 @@ $(sortProx);
 $(sortTime);
 $(enterPage);
 $(closeList);
+$(loadmore);
