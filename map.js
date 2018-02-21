@@ -5,7 +5,7 @@
 
 
 // meetUp URL
-const MEETUP_URL = `https://api.meetup.com/find/upcoming_events?&sign=true&photo-host=public&topic_category=`;
+const MEETUP_URL = `https://api.meetup.com/2/open_events?&sign=true&photo-host=public&topic=`;
 const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
@@ -101,35 +101,25 @@ function search(){
     }
     else{
     $.ajax({
-      url: `${MEETUP_URL}${USER_INPUT}&offset=5&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart`,
+      url: `${MEETUP_URL}${USER_INPUT}&offset=0&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart&page=20`,
       dataType: "JSONP",
       method: 'GET',
-      page: '60',
+      page: '20',
 
-      // headers: {
-      //   // 'Access-Control-Allow-Origin': '*',
-      //   // 'Content-type': 'application/x-www-form-urlencoded',
-      //   Authorization: `Bearer ${KEY}`
-      // }
-
-
-      // beforeSend: function(jqXHR, settings) {
-      //     document.write(settings.url);
-      //   }, 
       success: function(result){
         cleanMarkers(eventMarkers);
-        eventMarkers = addMarkers(result.data.events);
+        eventMarkers = addMarkers(result.results);
         if(eventMarkers.length === 0){
           alert('No Events Listed, please try another keyword!')
         }
 
         showListButton(eventMarkers);
-        showMarkers(eventMarkers, result.data.events);
-        $(listView(eventMarkers, result.data.events));
+        showMarkers(eventMarkers, result.results);
+        $(listView(eventMarkers, result.results));
         console.log(result);
         // here we make a deep copy of all events. To use for sorting purposes.
         let STORED_MARKERS = $.extend(true, [], eventMarkers);
-        let STORED_EVENTS = $.extend(true, [], result.data.events);
+        let STORED_EVENTS = $.extend(true, [], result.results);
         console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
         EVENT_DIST_PAIR = [];
         for (let i = 0; i<STORED_EVENTS.length; i++){
@@ -159,8 +149,17 @@ function addMarkers(events){
 // events is an array of events
   let markers = [];
   for(let i = 0; i < events.length; i++){
-    let eventLon = events[i].group.lon;
-    let eventLat = events[i].group.lat;
+    console.log(events[i].venue);
+    let eventLon;
+    let eventLat;
+    if(events[i].venue === undefined){
+      eventLon = events[i].group.group_lon;
+      eventLat = events[i].group.group_lat;     
+    }else{
+      eventLon = events[i].venue.lon;
+      eventLat = events[i].venue.lat;
+    };
+    console.log(eventLat,eventLon);
     let adjLatLon = correctPutLocation(eventLat, eventLon);
     let latLng = new google.maps.LatLng(adjLatLon[0], adjLatLon[1]);
     let distance = calDistance(eventLat, eventLon, centerLat, centerLon);
@@ -212,30 +211,24 @@ function showMarkers(markers, events){
     markers[i][0].setMap(map);
     let eventDescription;
     let eventLocalTime;
-    let eventLocalDate;
     if(events[i].description === undefined){
       eventDescription = "Please see event detail on the website.";
     }else{
       eventDescription = events[i].description;
     }
 
-    if(events[i].local_time === undefined){
+    if(events[i].time === undefined){
       eventLocalTime = "Not Provided";
     }else{
-      eventLocalTime = events[i].local_time;
+      eventLocalTime = new Date(events[i].time + events[i].utc_offset);
     }
-
-    if(events[i].local_date === undefined){
-      eventLocalDate = "Not Provided";
-    }else{
-      eventLocalDate = events[i].local_date;
-    }
+    console.log(eventLocalTime);
     let contentString = `
     <div class = 'popUpWindow'>
     <h1>Event Name: ${events[i].name}</h1>
-    <p>Event Time(Local): ${eventLocalDate} at ${eventLocalTime}</p>
+    <p>Event Time(Local): ${eventLocalTime}</p>
     <p>Distance to you: ${markers[i][1].toFixed(2)} Miles</p>
-    <a class = "link" href = '${events[i].link}' target="_blank">Event Link</a>
+    <a class = "link" href = '${events[i].event_url}' target="_blank">Event Link</a>
     <br>
     </div>
     `
@@ -302,32 +295,25 @@ function singleView(marker,event){
   console.log('function singleView ran!')
   let eventDescription;
   let eventLocalTime;
-  let eventLocalDate;
   if(event.description === undefined){
     eventDescription = "Please see event detail on the website.";
   }else{
     eventDescription = event.description;
   }
 
-  if(event.local_time === undefined){
+  if(event.time === undefined){
     eventLocalTime = "Not Provided";
   }else{
-    eventLocalTime = event.local_time;
+    eventLocalTime = new Date(event.time+event.utc_offset);
   }
 
-  if(event.local_date === undefined){
-    eventLocalDate = "Not Provided";
-  }else{
-    eventLocalDate = event.local_date;
-  }
   return `
   <div class='single-view'>
     <h1>${event.name}</h1>
     <div><span class="bold">Distance to you:</span><span>${marker[1].toFixed(2)} Miles</span></div>
     <div><span class="bold">Event Time: </span><span>${eventLocalTime}</span></div>
-    <div><span class="bold">Event Date: </span><span>${eventLocalDate}</span></div>
     <br>
-    <a class = "link" href = '${event.link}' target="_blank">Event Link</a>    
+    <a class = "link" href = '${event.event_url}' target="_blank">Event Link</a>    
     <div class="event-content-single-view">${eventDescription}</div>
   </div>
   `
@@ -444,33 +430,26 @@ function sortProx(){
 
       let eventDescription;
       let eventLocalTime;
-      let eventLocalDate;
       if(sortedEvents[i]["description"] === undefined){
         eventDescription = "Please see event detail on the website.";
       }else{
         eventDescription = sortedEvents[i]["description"];
       }
 
-      if(sortedEvents[i]["local_time"] === undefined){
+      if(sortedEvents[i]["time"] === undefined){
         eventLocalTime = "See on website";
       }else{
-        eventLocalTime = sortedEvents[i]["local_time"];
+        eventLocalTime = new Date(sortedEvents[i]["time"] +sortedEvents[i]["utc_offset"]);
       }
 
-      if(sortedEvents[i]["local_date"] === undefined){
-        eventLocalDate = "See on website";
-      }else{
-        eventLocalDate = sortedEvents[i]["local_date"];
-      }
       let singleContent = 
       `
       <div class='single-view'>
         <h1>${sortedEvents[i]["name"]}</h1>
         <div><span class="bold">Distance to you:</span><span>${sortedDistance[i].toFixed(2)} Miles</span></div>
         <div><span class="bold">Event Time: </span><span>${eventLocalTime}</span></div>
-        <div><span class="bold">Event Date: </span><span>${eventLocalDate}</span></div>
         <br>
-        <a class = "link" href = '${sortedEvents[i]["link"]}' target="_blank">Event Link</a>    
+        <a class = "link" href = '${sortedEvents[i]["event_url"]}' target="_blank">Event Link</a>    
         <div class="event-content-single-view">${eventDescription}</div>
       </div>
       `;
@@ -526,33 +505,27 @@ function sortTime(){
 
       let eventDescription;
       let eventLocalTime;
-      let eventLocalDate;
+
       if(sortedEvents[i][0]["description"] === undefined){
         eventDescription = "Please see event detail on the website.";
       }else{
         eventDescription = sortedEvents[i][0]["description"];
       }
 
-      if(sortedEvents[i][0]["local_time"] === undefined){
+      if(sortedEvents[i][0]["time"] === undefined){
         eventLocalTime = "See on website";
       }else{
-        eventLocalTime = sortedEvents[i][0]["local_time"];
+        eventLocalTime = new Date(sortedEvents[i][0]["time"] +sortedEvents[i][0]["utc_offset"]);
       }
 
-      if(sortedEvents[i][0]["local_date"] === undefined){
-        eventLocalDate = "See on website";
-      }else{
-        eventLocalDate = sortedEvents[i][0]["local_date"];
-      }
       let singleContent = 
       `
       <div class='single-view'>
         <h1>${sortedEvents[i][0]["name"]}</h1>
         <div><span class="bold">Distance to you:</span><span>${sortedEvents[i][1].toFixed(2)} Miles</span></div>
         <div><span class="bold">Event Time: </span><span>${eventLocalTime}</span></div>
-        <div><span class="bold">Event Date: </span><span>${eventLocalDate}</span></div>
         <br>
-        <a class = "link" href = '${sortedEvents[i][0]["link"]}' target="_blank">Event Link</a>    
+        <a class = "link" href = '${sortedEvents[i][0]["event_url"]}' target="_blank">Event Link</a>    
         <div class="event-content-single-view">${eventDescription}</div>
       </div>
       `;
