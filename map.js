@@ -88,8 +88,7 @@ function search(){
       alert("number is not allowed!");
     }else if(hasSpecialChar(USER_INPUT)){
       alert("special character is not allowed!")
-    }
-    else{
+    }else{
     $.ajax({
       url: `${MEETUP_URL}${USER_INPUT}&offset=0&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart&page=20`,
       dataType: "JSONP",
@@ -99,9 +98,10 @@ function search(){
       success: function(result){
         STORED_RESPONSE = result;
         cleanMarkers(eventMarkers);
-        eventMarkers = addMarkers(result.results);
-        if(eventMarkers.length === 0){
+        if(result.results === undefined){
           alert('No Events Listed, please try another keyword!')
+        }else{
+          eventMarkers = addMarkers(result.results);
         }
 
         showListButton(eventMarkers);
@@ -609,6 +609,7 @@ function hasSpecialChar(str){
  return /[~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?@]/g.test(str);
 }
 // --------------------------------------check if contains special char end --------------------------
+
 // ----------------------------------Run the program--------------------------------------------------
 
 $(search);
