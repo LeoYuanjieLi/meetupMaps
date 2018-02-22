@@ -10,6 +10,8 @@ const KEY = `142472577a4319c5c396d7767136165`;
 // map center latitude and longitude
 let centerLat;
 let centerLon;
+// event markers
+let eventMarkers = [];
 // EVENT_DIST_PAIR is to be used for storing the fetched data for sorting purpose.
 let EVENT_DIST_PAIR;
 // declare user input
@@ -76,7 +78,6 @@ function handleLocationError(browserHasGeolocation, infoWindow, pos) {
 
 // meetUp search
 function search(){
-  let eventMarkers = [];
   $('#js-search').submit(event =>{
     event.preventDefault();
     // if there are list viewing, close it because of user re-searched.
@@ -280,6 +281,16 @@ function listView(markers,events){
   })
 }
 
+
+// when user click on load more, the reload function will load additional callback events, it is similar to listView function
+function reload(markers,events){
+    // console.log('function listView ran!');
+    for(let i =0; i< events.length; i++){
+      $('.js-results-list .part-one').append(singleView(markers[i],events[i]));
+    }
+
+    
+}
 // create a single view of an event
 function singleView(marker,event){
   // console.log('function singleView ran!');
@@ -534,7 +545,7 @@ function loadmore(){
   $(".js-results").on( "click", ".load-more button", event =>{
     // console.log('load-more function ran, and the link is', STORED_RESPONSE.meta);
     if (STORED_RESPONSE["meta"]["next"] !== ""){
-      let eventMarkers = [];
+
       $.ajax({
                 url: STORED_RESPONSE["meta"]["next"],
                 dataType: "JSONP",
@@ -543,10 +554,11 @@ function loadmore(){
                 success: function(result){
                   STORED_RESPONSE = result;
                   console.log("the new response is", result);
-                  eventMarkers = addMarkers(result.results);
-                  showMarkers(eventMarkers, result.results);
-                  $(listView(eventMarkers, result.results));
-                  // console.log(result);
+                  let newEventMarkers = addMarkers(result.results);
+                  eventMarkers.push.apply(eventMarkers, newEventMarkers);
+                  showMarkers(newEventMarkers, result.results);
+                  reload(eventMarkers, result.results);
+                  console.log(eventMarkers);
                   // here we make a deep copy of all events. To use for sorting purposes.
                   let STORED_MARKERS = $.extend(true, [], eventMarkers);
                   let STORED_EVENTS = $.extend(true, [], result.results);
