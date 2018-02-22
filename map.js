@@ -12,6 +12,7 @@ let centerLat;
 let centerLon;
 // event markers
 let eventMarkers = [];
+let myEvents = [];
 // EVENT_DIST_PAIR is to be used for storing the fetched data for sorting purpose.
 let EVENT_DIST_PAIR;
 // declare user input
@@ -82,15 +83,16 @@ function search(){
     event.preventDefault();
     // if there are list viewing, close it because of user re-searched.
     $(".js-results").css("visibility", "hidden");
+    $(".js-list-button").empty();
     // get user input
     USER_INPUT = $("#searchBar input").val();
     if(hasNumber(USER_INPUT)){
       alert("number is not allowed!");
     }else if(hasSpecialChar(USER_INPUT)){
-      alert("special character is not allowed!")
+      alert("special character is not allowed!");
     }else{
     $.ajax({
-      url: `${MEETUP_URL}${USER_INPUT}&offset=0&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=smart&page=20`,
+      url: `${MEETUP_URL}${USER_INPUT}&offset=0&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=35&page=20`,
       dataType: "JSONP",
       method: 'GET',
       page: '20',
@@ -99,22 +101,27 @@ function search(){
         STORED_RESPONSE = result;
         cleanMarkers(eventMarkers);
         if(result.results === undefined){
-          alert('No Events Listed, please try another keyword!')
+          alert('No Events Listed, please try another keyword!');
+
+        }else if(result.results.length === 0){
+          alert('No Events Listed, please try another keyword!');
         }else{
           eventMarkers = addMarkers(result.results);
-        }
+          myEvents = result.results;
 
-        showListButton(eventMarkers);
-        showMarkers(eventMarkers, result.results);
-        $(listView(eventMarkers, result.results));
-        // console.log(result);
-        // here we make a deep copy of all events. To use for sorting purposes.
-        let STORED_MARKERS = $.extend(true, [], eventMarkers);
-        let STORED_EVENTS = $.extend(true, [], result.results);
-        // console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
-        EVENT_DIST_PAIR = [];
-        for (let i = 0; i<STORED_EVENTS.length; i++){
-          EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
+          showListButton(eventMarkers);
+          showMarkers(eventMarkers, result.results);
+          $(listView(eventMarkers, result.results));
+          // console.log(result);
+          // here we make a deep copy of all events. To use for sorting purposes.
+          let STORED_MARKERS = $.extend(true, [], eventMarkers);
+          let STORED_EVENTS = $.extend(true, [], myEvents);
+          // console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
+          EVENT_DIST_PAIR = [];
+          for (let i = 0; i<STORED_EVENTS.length; i++){
+            EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
+          }
+
         }
 
         // console.log("The length of EVENT_DIST_PAIR is", EVENT_DIST_PAIR.length);
@@ -460,7 +467,6 @@ function sortProx(){
       $('.part-one').append(singleContent);
     }
 
-    // console.log('now the length of EVENT_DIST_PAIR is', EVENT_DIST_PAIR.length);
   })
 }
 
@@ -499,10 +505,6 @@ function sortTime(){
     // recover our array 
     EVENT_DIST_PAIR = EVENT_DIST_PAIR_temp;
 
-
-    // console.log("STORED_EVENTS is", EVENT_DIST_PAIR);
-    // console.log("sorted time is", sortedTime);
-    // console.log("sorted events are", sortedEvents);
     $('.part-one').empty();
 
     for(let i = 0; i<sortedTime.length; i++){
@@ -560,17 +562,19 @@ function loadmore(){
                       $(".load-more").css("visibility", "hidden");
                     };
                   console.log("the new response is", result);
-                  let newEventMarkers = addMarkers(result.results);
+                  let newEvents = result.results;
+                  let newEventMarkers = addMarkers(newEvents);
                   eventMarkers.push.apply(eventMarkers, newEventMarkers);
+                  myEvents.push.apply(myEvents, newEvents);
                   showMarkers(newEventMarkers, result.results);
-                  reload(eventMarkers, result.results);
-                  console.log(eventMarkers);
+                  reload(eventMarkers, newEvents);
+                  // console.log(eventMarkers);
                   // here we make a deep copy of all events. To use for sorting purposes.
                   let STORED_MARKERS = $.extend(true, [], eventMarkers);
-                  let STORED_EVENTS = $.extend(true, [], result.results);
+                  let STORED_EVENTS = $.extend(true, [], myEvents);
                   // console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
-                  for (let i = 0; i<STORED_EVENTS.length; i++){
-                    EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
+                  for (let i = 0; i<newEventMarkers.length; i++){
+                    EVENT_DIST_PAIR.push([newEvents[i], newEventMarkers[i][1]]);
                   }
                 }
             })
