@@ -14,9 +14,9 @@ where people can find the location of the event, time, distance to current locat
 ### List View Interface
 ![alt text](https://raw.githubusercontent.com/LeoYuanjieLi/meetupMaps/master/Resources/ScreenShot3.JPG)
 ## Features
-
+#### Event dot's has different transparancy based on the distance to user's current location, the farther away the more transparant.
 #### Search events by category around user's location
-#### Click events and see details
+#### Click events and see details - click link to go to main page
 #### List events on list view
 #### Sort events by time
 #### Sort events by proximity
@@ -49,6 +49,4 @@ Austen Weinhart
 & my Sabi
 
 ## Feature to Add
-- Must: When event latitude and longitude not provide, instead of using group lat/lon, use Google Geocoding API to use the address to look for lat/lon
-
-- Optional: Allow user to set their search range(from 10 - 100 mile)
+- Optional: Allow user to set their search range(from 10, 25, 50, 75, 100 mile)
