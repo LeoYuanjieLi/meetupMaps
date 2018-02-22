@@ -272,6 +272,7 @@ main h2 {
 	margin:0;
 	margin-top: 5px;
 	text-align: center;
+	visibility: hidden;
 }
 .load-more button{
 	width: 50px;
@@ -283,6 +284,11 @@ main h2 {
 	text-align: center;
 }
 
+.load-more button:hover {
+	background-color: lightblue;
+	color:black;
+	border-style: none;
+}
 .cover-page{
 	text-align: center;
 	top:0;
