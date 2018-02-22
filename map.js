@@ -277,6 +277,9 @@ function listView(markers,events){
     }
 
      $('.js-results-list').append(`<div class="load-more"><button>Load More</button></div>`);
+     if(STORED_RESPONSE["meta"]["next"] !== ""){
+      $('.load-more').css("visibility", "visible");
+     }
     
   })
 }
@@ -553,6 +556,9 @@ function loadmore(){
                 page: '20',
                 success: function(result){
                   STORED_RESPONSE = result;
+                  if(STORED_RESPONSE["meta"]["next"] === ""){
+                      $(".load-more").css("visibility", "hidden");
+                    };
                   console.log("the new response is", result);
                   let newEventMarkers = addMarkers(result.results);
                   eventMarkers.push.apply(eventMarkers, newEventMarkers);
@@ -563,7 +569,6 @@ function loadmore(){
                   let STORED_MARKERS = $.extend(true, [], eventMarkers);
                   let STORED_EVENTS = $.extend(true, [], result.results);
                   // console.log("The length of STORED_EVENTS is", STORED_EVENTS.length);
-                  EVENT_DIST_PAIR = [];
                   for (let i = 0; i<STORED_EVENTS.length; i++){
                     EVENT_DIST_PAIR.push([STORED_EVENTS[i], STORED_MARKERS[i][1]]);
                   }
@@ -571,7 +576,11 @@ function loadmore(){
             })
 
 
-    }else{console.log('no more events!')}
+    }else{
+      console.log('no more events!')
+    }
+
+
 
   })
 }
