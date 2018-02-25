@@ -112,7 +112,7 @@ function search(){
           showListButton(eventMarkers);
           showMarkers(eventMarkers, result.results);
           $(listView(eventMarkers, result.results));
-          // console.log(result);
+          console.log(result);
           // here we make a deep copy of all events. To use for sorting purposes.
           let STORED_MARKERS = $.extend(true, [], eventMarkers);
           let STORED_EVENTS = $.extend(true, [], myEvents);
@@ -218,7 +218,7 @@ function showMarkers(markers, events){
     if(events[i].time === undefined){
       eventLocalTime = "Not Provided";
     }else{
-      eventLocalTime = new Date(events[i].time + events[i].utc_offset);
+      eventLocalTime = new Date(events[i].time);
     }
     // console.log(eventLocalTime);
     let contentString = `
@@ -315,7 +315,7 @@ function singleView(marker,event){
   if(event.time === undefined){
     eventLocalTime = "Not Provided";
   }else{
-    eventLocalTime = new Date(event.time+event.utc_offset);
+    eventLocalTime = new Date(event.time);
   }
 
   return `
@@ -450,7 +450,7 @@ function sortProx(){
       if(sortedEvents[i]["time"] === undefined){
         eventLocalTime = "See on website";
       }else{
-        eventLocalTime = new Date(sortedEvents[i]["time"] +sortedEvents[i]["utc_offset"]);
+        eventLocalTime = new Date(sortedEvents[i]["time"]);
       }
 
       let singleContent = 
@@ -521,7 +521,7 @@ function sortTime(){
       if(sortedEvents[i][0]["time"] === undefined){
         eventLocalTime = "See on website";
       }else{
-        eventLocalTime = new Date(sortedEvents[i][0]["time"] +sortedEvents[i][0]["utc_offset"]);
+        eventLocalTime = new Date(sortedEvents[i][0]["time"]);
       }
 
       let singleContent = 
