@@ -2,6 +2,7 @@
 show events around you (V 0.1)
 ## Live Code
 https://leoyuanjieli.github.io/meetupMaps/
+
 If you find a bug, please submit an issue. Appreciated!
 
 ## Objective
