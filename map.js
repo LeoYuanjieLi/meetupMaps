@@ -91,8 +91,10 @@ function search(){
     }else if(hasSpecialChar(USER_INPUT)){
       alert("special character is not allowed!");
     }else{
+      const radius = $('#searchBar select').val();
+      console.log(radius);
     $.ajax({
-      url: `${MEETUP_URL}${USER_INPUT}&offset=0&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=35&page=20`,
+      url: `${MEETUP_URL}${USER_INPUT}&offset=0&key=${KEY}&lat=${centerLat}&lon=${centerLon}&radius=${radius}&page=20`,
       dataType: "JSONP",
       method: 'GET',
       page: '20',
