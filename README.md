@@ -23,6 +23,7 @@ where people can find the location of the event, time, distance to current locat
 #### Sort events by time
 #### Sort events by proximity
 #### Load more events of the same category
+#### Allow user to choose search radius distance
 
 ## Build with
 
@@ -51,4 +52,4 @@ Austen Weinhart
 & my Sabi
 
 ## Feature to Add
-- Optional: Allow user to set their search range(from 10, 25, 50, 75, 100 mile)
+- Add MyEvent bar for user to store their favorite events
