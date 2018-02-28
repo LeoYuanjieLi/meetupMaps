@@ -466,7 +466,7 @@ main h2 {
 	}
 	main #searchBar{
 		margin:0;
-		width: 45%;
+		width: 30%;
 		border-radius: 5px;
 		box-shadow: 1px 1px black;
 		z-index: 10;
@@ -514,7 +514,7 @@ main h2 {
 
 	#searchBar input {
 		color:blue;
-		width: 65%;
+		width: 50%;
 		font-size: 18px;
 		height:30px;
 		border: solid 1px lightgrey;
@@ -528,7 +528,7 @@ main h2 {
 	}
 	main #searchBar{
 		margin:0;
-		width: 35%;
+		width: 32%;
 		border-radius: 5px;
 		box-shadow: 1px 1px black;
 		z-index: 10;
