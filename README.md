@@ -1,5 +1,5 @@
 # meetupMaps
-show events around you (V 0.1)
+show events around you (V 0.1) Please note: Best experience with Chrome and Edge, some APIs are not supported by IE Explorer
 ## Live Code
 https://leoyuanjieli.github.io/meetupMaps/
 
