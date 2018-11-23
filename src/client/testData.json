@@ -1,0 +1,14 @@
+{
+    "contests": [
+        {
+            "id": 1,
+            "categoryName": "Business/Company",
+            "contestName": "Cognitive Building Bricks"
+        },
+        {
+            "id": 2,
+            "categoryName": "Magazine/Newsletter",
+            "contestName": "Educating people about fashion"
+        }
+    ]
+}

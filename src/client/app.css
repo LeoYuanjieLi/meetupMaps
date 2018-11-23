@@ -1,8 +1,603 @@
-h1 {
-  color: green;
+*{
+	box-sizing: border-box;
+	font-family: 'PT Sans', sans-serif;
+
 }
 
 body {
-  text-align: center;
-  margin: auto;
+	margin:auto;
+}
+
+html, body, main{
+	overflow: hidden;
+	width: 100%;
+	height: 100%;
+	margin:0;
+	padding:0;
+}
+
+main #heading{
+	right:2.5%;
+	margin:0;
+	border-radius: 5px;
+	box-shadow: 1px 1px lightblue;
+	z-index: 1;
+	padding-left:10px;
+	padding-right: 10px;
+	background-color: black;
+	top:10px;
+	position:fixed;
+}
+
+main #searchBar{
+	width: 98%;
+	border-radius: 5px;
+	box-shadow: 1px 1px black;
+	z-index: 1;
+	padding:5px;
+	background-color: white;
+	top:60px;
+	left:1%;
+	margin:0;
+	position:absolute;
+}
+
+main h2 {
+	color: white;
+	margin:0;
+	text-align: right;
+
+}
+
+#map {
+	height: 100%;
+	width: 100%;
+}	
+
+
+
+/*animate primary location marker*/
+/*#markerLayer {
+  animation: pulse .5s infinite alternate;
+  -webkit-animation: pulse .5s infinite alternate;
+  transform-origin: center;
+  -webkit-transform-origin: center;
+}*/
+
+
+/*pup up info window*/
+
+.popUpWindow {
+	text-align: left;
+    padding: 5px;
+}
+
+.link {
+	margin-bottom: 10px;
+	text-decoration: none;
+	padding:5px;
+	font-weight: bold;
+	color: black;
+	font-size: 18px;
+	background-color: lightblue;
+	border-radius: 5px;
+}
+
+.link:hover {
+	background-color: pink;
+	color: black;
+}
+
+.eventContentPopUp {
+	color:darkgrey;
+	font-weight: bold;
+}
+
+
+#searchBar {
+	display: inline-block;
+	margin:5px;
+}
+#searchBar input {
+	color:blue;
+	width: 45%;
+	font-size: 18px;
+	height:30px;
+	border: solid 1px lightgrey;
+	border-radius: 2px;
+}
+
+#searchBar select {
+	margin:auto;
+	margin-right:5px;
+	float:right;
+	height: 30px;
+	border-radius: 5px;
+	border: 1px black solid;
+}
+
+#searchBar button {
+	float:right;
+	font-size:16px;
+	height:30px;
+	color: white;
+	background-color: black;
+	border-style: none;
+	border-radius: 5px;
+}
+
+#searchBar button:hover {
+	background-color: pink;
+	color:black;
+}
+
+
+.listButton {
+	margin-top:5px;
+	border-radius: 5px;
+	border-style: none;
+	position: relative;
+	height: 30px;
+	z-index: 10;
+}
+
+.js-results {
+	border-style: none;
+	border-radius: 5px;
+	background-color: white;
+	z-index: 4;
+	position: absolute;
+	top:0px;
+	left:0%;
+	right:0%;
+	height: 100%;
+	visibility: hidden;
+	opacity: 1;
+	box-shadow: 3px 3px black;
+}
+
+.js-results-list {
+	margin-top: 5px;
+	z-index: 2;
+	position: relative;
+	display: block;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	height: 90%;
+}
+
+.part-one {
+	margin:0;
+	margin-left: 5%;
+	display: flex;
+	flex-wrap: wrap;
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+
+.single-view {
+	border-radius: 5px;
+	border: solid lightgrey 1px;
+	padding:10px;
+	opacity: 1;
+	margin:1%;
+	z-index: 10;
+	position: relative;
+	background-color: whitesmoke;
+	width: 98%;
+	height: 300px;
+	overflow-y: scroll;
+	overflow-x: hidden;
+	overflow-wrap: break-word;
+}
+
+.single-view:hover {
+	opacity:1;
+	border: pink solid 1px;
+}
+
+.event-content-single-view {
+	padding: 15px;
+}
+
+
+
+.sort-by-prox, .sort-by-time{
+	position: relative;
+	background-color: white;
+	font-size: 18px;
+	border: 1px solid black;
+	border-radius: 2px;
+	z-index: 10;
+	margin-left: 1%;
+	margin-top: 1%;
+
+}
+
+.sort-by-prox:hover, .sort-by-time:hover {
+	background-color: pink;
+	color: black;
+	border-color: pink;
+}
+.close-list {
+	color: white;
+	font-size:18px;
+	border-style: none;
+	background-color: black;
+	border-radius: 2px;
+	z-index: 10;
+	position: relative;
+	margin-left: 1%;
+	margin-top: 1%;
+}
+
+.close-list:hover {
+	background-color: pink;
+	color: black;
+}
+
+#searchBar:active {
+	box-shadow: 0 0 3pt 2pt lightblue;
+}
+
+
+
+
+/*scroll bar*/
+/* Let's get this party started */
+::-webkit-scrollbar {
+    width: 10px;
+}
+ 
+/* Track */
+::-webkit-scrollbar-track {
+    -webkit-border-radius: 5px;
+    border-radius: 5px;
+}
+ 
+/* Handle */
+::-webkit-scrollbar-thumb {
+    -webkit-border-radius: 5px;
+    border: 1px solid grey;
+    border-radius: 5px;
+    background: whitesmoke;  
+}
+
+
+
+
+/*text styles*/
+
+.bold {
+	font-weight: bold;
+}
+
+
+/*load more*/
+
+.load-more {
+	margin:0;
+	margin-top: 5px;
+	text-align: center;
+	visibility: hidden;
+}
+.load-more button{
+	width: 50px;
+	height: 50px;
+	border-radius: 50%;
+	background-color: white;
+	border: 1px darkgrey solid;
+	color:black;
+	text-align: center;
+}
+
+.load-more button:hover {
+	background-color: lightblue;
+	color:black;
+	border-style: none;
+}
+.cover-page{
+	text-align: center;
+	top:0;
+	position: absolute;
+	background-color: white;
+	width: 100%;
+	height: 100%;
+	margin:0;
+	z-index: 99;
+	opacity: 0.8;
+
+}
+
+.cover-page h1 {
+	margin:0;
+	font-size:60px;
+	top:-18%;
+	position: relative;
+	text-align: center;
+}
+
+.cover-page p {
+	top:-18%;
+	position: relative;
+	margin-left: 2%;
+	margin-right: 2%;
+	margin-top: 0;
+	margin-bottom: 1%;
+	font-size:9px;
+}
+.cover-page img {
+	margin:0;
+	position: relative;
+	text-align: center;
+	width: 50%;
+	height: 50%;
+}
+
+.cover-page button {
+	margin:0;
+	top:-60px;
+	position: relative;
+	width: 160px;
+	height: 40px;
+	background-color: black;
+	color: white;
+	border-style: none;
+	border-radius: 5px;
+
+}
+
+.cover-page button:active {
+  transform: translateY(4px);
+}
+
+.cover-page button span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.cover-page button span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.cover-page button:hover span {
+  padding-right: 25px;
+}
+
+.cover-page button:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+
+/*----------------Animate the current location marker------------------------------------------*/
+
+
+/*----------------Animate the current location marker ends------------------------------------*/
+
+/*--------------------------------responsive design codes--------------------------------------*/
+/*landscape*/
+@media only screen and (max-width: 500px) and (orientation : landscape){
+	.cover-page p {
+	font-size:12px;
+	}
+
+}
+
+@media only screen and (max-width: 960px) and (min-width: 500px) {
+	.cover-page p {
+	font-size:12px;
+	}
+	main #searchBar{
+		margin:0;
+		width: 80%;
+		border-radius: 5px;
+		box-shadow: 1px 1px black;
+		z-index: 1;
+		padding:5px;
+		background-color: white;
+		top:60px;
+		left:5%;
+		position:absolute;
+	}
+
+
+	.js-results {
+		border-style: none;
+		border-radius: 5px;
+		background-color: white;
+		z-index: 1;
+		margin:0;
+		position: absolute;
+		top:150px;
+		left:2.5%;
+		right:2.5%;
+		height: 75%;
+		visibility: hidden;
+		opacity:1;
+	    box-shadow: 3px 3px black;
+	}
+
+
+	.single-view {
+		border-radius: 5px;
+		border: solid lightgrey 1px;
+		padding:10px;
+		opacity: 1;
+		margin:1%;
+		z-index: 10;
+		position: relative;
+		background-color: whitesmoke;
+		width: 47%;
+		height: 300px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		overflow-wrap: break-word;
+	}
+
+	#searchBar input {
+		color:blue;
+		width: 60%;
+		font-size: 18px;
+		height:30px;
+		border: solid 1px lightgrey;
+		border-radius: 2px;
+	}
+
+}
+/*landscape*/
+@media only screen and (max-width: 960px) and (min-width: 500px) and (orientation : landscape){
+	.cover-page p {
+	font-size:12px;
+	}
+
+}
+
+@media only screen and (min-width: 960px) and (max-width: 1280px) {
+
+	.cover-page p {
+	font-size:18px;
+	}
+	main #searchBar{
+		margin:0;
+		width: 30%;
+		border-radius: 5px;
+		box-shadow: 1px 1px black;
+		z-index: 10;
+		padding:5px;
+		background-color: white;
+		top:60px;
+		left:5%;
+		position:absolute;
+	}
+
+	.js-results {
+		border-style: none;
+		border-radius: 5px;
+		background-color: white;
+		z-index: 1;
+		position: absolute;
+		top:60px;
+		left:40%;
+		right:3%;
+		height: 90%;
+		visibility: hidden;
+		opacity: 0.6;
+	}
+
+	.js-results:hover {
+	    box-shadow: 3px 3px black;
+	    opacity:1;
+	}	
+
+	.single-view {
+		border-radius: 5px;
+		border: solid lightgrey 1px;
+		padding:10px;
+		opacity: 1;
+		margin:1%;
+		z-index: 10;
+		position: relative;
+		background-color: whitesmoke;
+		width: 47%;
+		height: 300px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		overflow-wrap: break-word;
+	}
+
+	#searchBar input {
+		color:blue;
+		width: 50%;
+		font-size: 18px;
+		height:30px;
+		border: solid 1px lightgrey;
+		border-radius: 2px;
+	}
+}
+
+@media only screen and (min-width: 1280px) {
+	.cover-page p {
+	font-size:18px;
+	}
+	main #searchBar{
+		margin:0;
+		width: 32%;
+		border-radius: 5px;
+		box-shadow: 1px 1px black;
+		z-index: 10;
+		padding:5px;
+		background-color: white;
+		top:60px;
+		left:5%;
+		position:absolute;
+	}
+
+	.js-results {
+		border-style: none;
+		border-radius: 5px;
+		background-color: white;
+		z-index: 1;
+		position: absolute;
+		top:60px;
+		left:40%;
+		right:3%;
+		height: 90%;
+		visibility: hidden;
+		opacity: 0.6;
+	}
+
+	.js-results:hover {
+	    box-shadow: 3px 3px black;
+	    opacity:1;
+	}	
+
+	.single-view {
+		border-radius: 5px;
+		border: solid lightgrey 1px;
+		padding:10px;
+		opacity: 1;
+		margin:1%;
+		z-index: 1;
+		position: relative;
+		background-color: whitesmoke;
+		width: 47%;
+		height: 300px;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		overflow-wrap: break-word;
+	}
+
+	#searchBar input {
+		color:blue;
+		width: 65%;
+		font-size: 18px;
+		height:30px;
+		border: solid 1px lightgrey;
+		border-radius: 2px;
+	}
+
+}
+
+
+.ContestPreview {
+    margin: 1em;
+    border: 2px solid rgb(160, 11, 165);
+}
+
+.ContestPreview .contest-name {
+    padding: 0.5em;
+}
+
+.ContestPreview .category-name {
+    border-bottom: 1px solid #ccc;
+    padding: 0.25em 0.5em;
+    font-weight: bold;
+    background-color: #eee;
 }
